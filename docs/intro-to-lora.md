@@ -251,16 +251,16 @@ Once the device mounts, drag the compiled file onto the board. This causes the d
 By default the application sends data automatically. If you want to change this, remove these lines from ``main.cpp``:
 
 ```cpp
-    if( txOn == true )
-    {
-        //Sends frame every APP_TX_DUTYCYCLE +/- APP_TX_DUTYCYCLE_RND random time (if not duty cycle limited)
-        os_setTimedCallback( &sendFrameJob,
-                             os_getTime( ) + ms2osticks( APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND ) ),
-                             onSendFrame );
+if( txOn == true )
+{
+    //Sends frame every APP_TX_DUTYCYCLE +/- APP_TX_DUTYCYCLE_RND random time (if not duty cycle limited)
+    os_setTimedCallback( &sendFrameJob,
+                         os_getTime( ) + ms2osticks( APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND ) ),
+                         onSendFrame );
 
-        ////Sends frame as soon as possible (duty cycle limitations)
-        //onSendFrame( NULL );
-    }
+    ////Sends frame as soon as possible (duty cycle limitations)
+    //onSendFrame( NULL );
+}
 ```
 
 You can now add code that sends a message whenever you want it to, for example when an interrupt fires because someone moves in front of your PIR sensor. For example:
