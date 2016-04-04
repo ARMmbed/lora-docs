@@ -102,10 +102,8 @@ After following these steps:
 1. Restart the Pi.
 1. Run:
 
-    ```bash
-    ~/LoRa/lora_gateway/lora_gateway/util_pkt_logger/util_pkt_logger
-    ```
-
+    ``~/LoRa/lora_gateway/lora_gateway/util_pkt_logger/util_pkt_logger``
+    
 1. You should see 'INFO: concentrator started, packet can now be received', which indicates that everything is functioning.
 
 ## Installing the LORIOT software
@@ -125,12 +123,9 @@ Now that we have set up the gateways and they can reach the internet, it's time 
 
     **Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example:
 
-    ```bash
-    scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/`
-    ```
-
+    ``scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/``
+    
 1. The gateway now shows as connected on the LORIOT gateway page and we're ready to work on the device.
-
 
 ![Connected!](assets/lora4.png)
 
