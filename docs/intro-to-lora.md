@@ -406,4 +406,4 @@ LoRa is a great technology with a lot of potential, especially because anyone ca
 
 ---
 
-*[Jan Jongboom](http://twitter.com/janjongboom) is Developer Evangelist IoT at ARM, and a vivid LoRa enthusiast.*
+*[Jan Jongboom](http://twitter.com/janjongboom) is Developer Evangelist IoT at ARM, and an avid LoRa enthusiast.*
