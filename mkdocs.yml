@@ -4,4 +4,4 @@ docs_dir: docs
 
 pages:
 - ['index.md','LoRa on mbed']
-- ['intro-to-lora.md','Introduction to LoRa']
+- ['intro-to-lora.md','Building your own LoRa network']
