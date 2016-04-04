@@ -1,6 +1,6 @@
 site_name: Getting started with LoRa on mbed
 
-docs_dir: Docs
+docs_dir: docs
 
 pages:
 - ['index.md','LoRa on mbed']
