@@ -6,7 +6,6 @@ There is a lot of buzz around [LoRa](https://www.lora-alliance.org), a wide-area
 
 A typical LoRa network consists of four parts: devices, gateways, a network service and an application:
 
-
 ![Topology of a LoRa network](assets/lora1.png)
 
 On the hardware side we need devices and gateways, similar to how we set up a WiFi network. Gateways are very simple: they just scan the spectrum and capture LoRa packets. There is also no gateway pinning here; all gateways within range of a device will receive the signal. The gateways then forward their data to a network service that handles the actual packet.
@@ -28,7 +27,6 @@ There's quite some [choice in the gateways](https://www.loriot.io/gateways.html)
 
 *Self built LoRa gateway based on Raspberry Pi 2 and IMST iC880A. Total cost about 300 euros.*
 
-
 For development purposes one gateway will be enough, but in a production deployment you'll want at least two, as there will always be dark spots in your network.
 
 ### Getting a device
@@ -37,7 +35,6 @@ We'll also need to build devices. If you want to use ARM mbed (and you should) t
 
 * Get the [Multitech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [EVK board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
 * Get the [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) shield, and a microcontroller that runs mbed (in this article I'm using the [nrf51-DK](https://developer.mbed.org/platforms/Nordic-nRF51-DK/), although most microcontrollers will work).
-
 
 For both these options we have basic firmware already available, which we'll get to later in this document.
 
@@ -65,7 +62,6 @@ To configure the Kerlink:
 1. The gateway gets an IP through DHCP.
 1. To quickly find the gateway you can look in the DHCP table on your router, or use [nmap](http://nmap.org) via `nmap -p 22 192.168.2.*` (if that's your subnet).
 1. You can now log into the gateway through SSH, with the username `root` and password `root`.
-
 
 Often the Kerlink IoT station comes pre-configured with the packet forwarder (run `ps | grep pkt` to see if one is running). If this is the case, make sure the packet forwarder does not start on startup by removing the entry from `/etc/init.d`.
 
@@ -106,9 +102,9 @@ After following these steps:
 1. Restart the Pi.
 1. Run:
 
-```bash
-~/LoRa/lora_gateway/lora_gateway/util_pkt_logger/util_pkt_logger
-```
+    ```bash
+    ~/LoRa/lora_gateway/lora_gateway/util_pkt_logger/util_pkt_logger
+    ```
 
 1. You should see 'INFO: concentrator started, packet can now be received', which indicates that everything is functioning.
 
@@ -120,21 +116,18 @@ Now that we have set up the gateways and they can reach the internet, it's time 
 1. You're redirected to the dashboard page.
 1. Click the link to register a new gateway.
 
-
-![First step to registering a new gateway](assets/lora2.png)
+    ![First step to registering a new gateway](assets/lora2.png)
 
 1. You're now taken through a wizard. Just pick the gateway you have and follow the steps.
 1. You're taken to the gateway page where you'll find the LORIOT binary for your platform, and a link to set up documentation.
 
+    ![Almost there...](assets/lora3.png)
 
+    **Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example:
 
-![Almost there...](assets/lora3.png)
-
-**Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example:
-
-```bash
-scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/`
-```
+    ```bash
+    scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/`
+    ```
 
 1. The gateway now shows as connected on the LORIOT gateway page and we're ready to work on the device.
 
@@ -369,14 +362,11 @@ Now that we have the first three parts of our network up and running, it's time 
 1. In LORIOT: go to your dashboard and click *Applications > Sample App > Output*.
 1. Change the output type to *WebSocket*.
 
-
-
-![Websocket](assets/lora14.png)
+    ![Websocket](assets/lora14.png)
 
 1. Copy the URL and the token under *Current output setup* and paste them in the code sample below:
 
-
-![Retrieving the API parameters from the output tab in LORIOT](assets/lora16.png)
+    ![Retrieving the API parameters from the output tab in LORIOT](assets/lora16.png)
 
 ```html
 <!DOCTYPE html>
@@ -413,8 +403,6 @@ Now that we have the first three parts of our network up and running, it's time 
 
 And done! We now have a fully functioning LoRa network with a device, a gateway and a web application:
 
-
-
 ![Full circle](assets/lora15.png)
 
 ## Conclusion
@@ -424,4 +412,3 @@ LoRa is a great technology with a lot of potential, especially because anyone ca
 ---
 
 *[Jan Jongboom](http://twitter.com/janjongboom) is Developer Evangelist IoT at ARM, and a vivid LoRa enthusiast.*
-
