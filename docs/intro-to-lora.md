@@ -41,7 +41,7 @@ We'll also need to build devices. If you want to use ARM mbed (and you should) t
 
 For both these options we have basic firmware already available, which we'll get to later in this document.
 
-**Note:** When ordering hardware, always make sure that you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).
+<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** When ordering hardware, always make sure that you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).</span>
 
 ### Network server
 
@@ -55,9 +55,7 @@ As a network server just processes your data - it doesn't store it - you'll need
 
 We now need to configure our gateway by installing some software that will scan the spectrum and forward all LoRa packets to LORIOT. To do this we'll need to log into the gateway. Here are setup instructions for the three gateways mentioned earlier.
 
-**Note:** This section assumes that you're familiar with SSH.
-
-
+<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** This section assumes that you're familiar with SSH.</span>
 
 ### Kerlink IoT station
 
@@ -101,7 +99,7 @@ First make sure that the Raspberry Pi is connected to the internet, and that you
 
 Log into the Pi over SSH, and follow Steps 3.1 - 3.5 in [this document](http://www.wireless-solutions.de/images/stories/downloads/Radio%20Modules/iC880A/iC880A_QuickStartGuide.pdf).
 
-**Note:** Use [lora_gateway 2.0.0](https://github.com/Lora-net/lora_gateway/releases/tag/v2.0.0), not the latest version (run `git checkout v2.0.0` in the lora_gateway folder).
+<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** Use [lora_gateway 2.0.0](https://github.com/Lora-net/lora_gateway/releases/tag/v2.0.0), not the latest version (run `git checkout v2.0.0` in the lora_gateway folder).</span>
 
 After following these steps:
 
@@ -192,7 +190,7 @@ Now that we have the keys we can start writing some software.
 
 ![Importing a program to get started](assets/lora7.png)
 
-**Note:** Make sure that you select the right board in the top right corner of the compiler.
+<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** Make sure that you select the right board in the top right corner of the compiler.</span>
 
 
 ![Selecting the right board is kinda important](assets/lora8.png)
@@ -325,16 +323,11 @@ Change the content of the `prepareTxFrame` function to change which data you're 
 1. Click *Import this program*.
 1. You're redirected to the online compiler where you can give the program a name.
 
-
-
 ![Importing a program to get started](assets/lora12.png)
 
-**Note:** Make sure that you select the right board in the top right corner of the compiler.
-
-
+<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** Make sure that you select the right board in the top right corner of the compiler.</span>
 
 ![Selecting the right board is kinda important](assets/lora13.png)
-
 
 #### Adding LORIOT keys
 
