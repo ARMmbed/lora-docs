@@ -140,7 +140,7 @@ Now that we have set up the gateways and they can reach the internet, it's time 
 
 1. The gateway now shows as connected on the LORIOT gateway page and we're ready to work on the device.
 
-![Connected!](assets/lora4.png)
+    ![Connected!](assets/lora4.png)
 
 **Tip:** LORIOT has a 'Gateway Tap', which you can access from your gateway page. This allows you to see what messages are being picked up by the gateway - very useful when debugging.
 
