@@ -8,7 +8,7 @@ A typical LoRa network consists of four parts: devices, gateways, a network serv
 
 ![Topology of a LoRa network](assets/lora1.png)
 
-On the hardware side we need devices and gateways, similar to how we set up a WiFi network. Gateways are very simple: they just scan the spectrum and capture LoRa packets. There is also no gateway pinning here, devices are not associated with a single gateway; thus all gateways within range of a device will receive the signal. The gateways then forward their data to a network service that handles the packet.
+On the hardware side we need devices and gateways, similar to how we set up a WiFi network. Gateways are very simple: they just scan the spectrum and capture LoRa packets. There is also no gateway pinning here - devices are not associated with a single gateway; thus all gateways within range of a device will receive the signal. The gateways then forward their data to a network service that handles the packet.
 
 The network service de-duplicates packets when multiple gateways receive the same packet, decrypts the message (everything is end-to-end encrypted), handles LoRa features like adaptive data rating, and so on. It then forwards the decrypted data to your application.
 
