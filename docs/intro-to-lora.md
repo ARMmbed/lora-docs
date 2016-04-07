@@ -1,6 +1,6 @@
 # Building your own private LoRa network
 
-There is a lot of buzz around [LoRa](https://www.lora-alliance.org), a wide-area network solution that promises kilometers of range with very low power consumption; a perfect fit for the Internet of Things. A number of telecom operators are currently rolling out networks, but because LoRa operates in the [open spectrum](https://en.wikipedia.org/wiki/ISM_band) you don't need to wait for them. In this article we'll go over all the pieces required to build a private LoRa network, and how to use the network to send data from an ARM mbed end-node to the cloud.
+There is a lot of buzz around [LoRa](https://www.lora-alliance.org), a wide-area network solution that promises kilometers of range with very low power consumption; a perfect fit for the Internet of Things. A number of telecom operators are currently rolling out networks, but because LoRa operates in the [open spectrum](https://en.wikipedia.org/wiki/ISM_band) you can also set up your own network. In this article we'll go over all the pieces required to build a private LoRa network, and how to use the network to send data from an ARM mbed end-node to the cloud.
 
 ## Requirements
 
@@ -8,11 +8,24 @@ A typical LoRa network consists of four parts: devices, gateways, a network serv
 
 ![Topology of a LoRa network](assets/lora1.png)
 
-On the hardware side we need devices and gateways, similar to how we set up a WiFi network. Gateways are very simple: they just scan the spectrum and capture LoRa packets. There is also no gateway pinning here; all gateways within range of a device will receive the signal. The gateways then forward their data to a network service that handles the actual packet.
+On the hardware side we need devices and gateways, similar to how we set up a WiFi network. Gateways are very simple: they just scan the spectrum and capture LoRa packets. There is also no gateway pinning here, devices are not associated with a single gateway; thus all gateways within range of a device will receive the signal. The gateways then forward their data to a network service that handles the packet.
 
-The network service de-duplicates data when multiple gateways receive the same packet, decrypts the message (everything is end-to-end encrypted), handles LoRa features like adaptive data rating, and so on. It then forwards the decrypted data to your application.
+The network service de-duplicates packets when multiple gateways receive the same packet, decrypts the message (everything is end-to-end encrypted), handles LoRa features like adaptive data rating, and so on. It then forwards the decrypted data to your application.
 
-That gives us five requirements. We need hardware: gateways and devices; we need software: device firmware, a network service and an app. In this guide we'll show you which hardware you can buy, and we'll use two online services that will make it easy to write device firmware and handle your LoRa traffic.
+That gives us five requirements.
+
+We need hardware:
+
+* Gateways
+* Devices
+
+And we need software:
+
+* Device firmware
+* A network service
+* An app
+
+In this guide we'll show you which hardware you can buy, and we'll use two online services that will make it easy to write device firmware and handle your LoRa traffic.
 
 ### Getting a gateway
 
@@ -36,7 +49,7 @@ We'll also need to build devices. If you want to use ARM mbed (and you should) t
 * Get the [Multitech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [EVK board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
 * Get the [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) shield, and a microcontroller that runs mbed (in this article I'm using the [nrf51-DK](https://developer.mbed.org/platforms/Nordic-nRF51-DK/), although most microcontrollers will work).
 
-For both these options we have basic firmware already available, which we'll get to later in this document.
+For either of these setups we have basic firmware already available, which we'll get to later in this document.
 
 <span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** When ordering hardware, always make sure that you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).</span>
 
@@ -44,7 +57,7 @@ For both these options we have basic firmware already available, which we'll get
 
 Now on to the software side. We'll need a server that understands the LoRa protocol and can interpret the data being sent from the device. It's possible to roll your own (Semtech can give you their reference implementation if you sign an NDA), but there are also companies building LoRa Network Servers as a service, handling everything on your behalf. Today we'll be using such a service, from the Switzerland-based startup [LORIOT](https://loriot.io).
 
-LORIOT is free for up to one gateway, and up to ten end-devices, which is good enough for evaluation purposes. Unfortunately the free plan has some limitations: it does not include bi-directional data (sending messages back from the cloud to a device) and over-the-air activation. But upgrading is relatively cheap (starting at 57 euros per month).
+LORIOT is free for up to one gateway, and up to ten end-devices, which is good enough for evaluation purposes. Unfortunately the free plan has some limitations: it does not include bi-directional data (sending messages back from the cloud to a device) and over-the-air activation. These services can be bought as an upgrade though (starting at 57 euros per month).
 
 As a network server just processes your data - it doesn't store it - you'll need a place to store your messages as well. LORIOT allows you to hook into their service over a TCP socket or websocket and forward your data to the cloud service of your choice (or straight to your application).
 
@@ -103,7 +116,7 @@ After following these steps:
 1. Run:
 
     ``~/LoRa/lora_gateway/lora_gateway/util_pkt_logger/util_pkt_logger``
-    
+
 1. You should see 'INFO: concentrator started, packet can now be received', which indicates that everything is functioning.
 
 ## Installing the LORIOT software
@@ -124,7 +137,7 @@ Now that we have set up the gateways and they can reach the internet, it's time 
     **Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example:
 
     ``scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/``
-    
+
 1. The gateway now shows as connected on the LORIOT gateway page and we're ready to work on the device.
 
 ![Connected!](assets/lora4.png)
@@ -190,7 +203,7 @@ We need to set the right frequency for the version of the shield you have (and w
 
 Open ``LMiC/lmic.h``, and find the following lines:
 
-```
+```cpp
 // mbed compiler options
 //#define CFG_eu868                                   1
 #define CFG_us915                                   1
@@ -198,6 +211,19 @@ Open ``LMiC/lmic.h``, and find the following lines:
 
 Make sure the right line is uncommented, depending on the shield version that you have.
 
+__If you have the SX1276MB1LAS:__
+
+```cpp
+//#define CFG_eu868                                   1
+#define CFG_us915                                   1
+```
+
+__If you have the SX1276MB1MAS:__
+
+```cpp
+#define CFG_eu868                                   1
+//#define CFG_us915                                   1
+```
 
 #### Adding LORIOT keys
 
