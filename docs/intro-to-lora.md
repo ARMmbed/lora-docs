@@ -229,6 +229,8 @@ __If you have the SX1276MB1MAS:__
 
 Now let's program the keys from LORIOT into the device firmware.
 
+![Copying the address and the keys from LORIOT into the device firmware](assets/lora17.png)
+
 Open ``main.cpp``, and change the following lines:
 
 ```cpp
@@ -248,8 +250,8 @@ static uint8_t ArtSKey[] =
 };
 ```
 
-* Set `LORAWAN_DEV_ADDR` to the *big endian* DevAddr from LORIOT.
-* Set `NwkSKey` and `ArtSKey` to the NWKSKEY and APPSKEY from LORIOT, but turn them into hex numbers. For example, a LORIOT key of `5ADA30AA` should be `0x5A, 0xDA, 0x30, 0xAA` in your code.
+* Set `LORAWAN_DEV_ADDR` to the *big endian* DevAddr from LORIOT (green), prefixed with `0x`.
+* Set `NwkSKey` and `ArtSKey` to the NWKSKEY (orange) and APPSKEY (yellow) from LORIOT, but turn them into hex numbers. For example, a LORIOT key of `5ADA30AA` should be `0x5A, 0xDA, 0x30, 0xAA` in your code.
 
 
 #### Verifying our setup
@@ -347,12 +349,14 @@ Change the content of the `prepareTxFrame` function to change which data you're 
 
 Now let's program the keys from LORIOT into the device firmware.
 
-Open ``main.cpp``, and copy the big endian DevAddr and the `APPSKEY` and `NWKSKEY`'s from LORIOT into the application:
+![Copying the address and the keys from LORIOT into the device firmware](assets/lora17.png)
+
+Open ``main.cpp``, and copy the big endian `DevAddr` (green), the `NWKSKEY` (orange) and the `NWKSKEY` (yellow) from LORIOT into the application:
 
 ```cpp
-static const char LORIOT_DEV_ADDR[]  = "AABBCCDD"; // Use the big endian version here
-static const char LORIOT_NWK_S_KEY[] = "E8A25EBD07F85800E08478A041FACBA7"; // NWKSKEY
-static const char LORIOT_APP_S_KEY[] = "BE8EF84E745D0AB14D4507B0BA600555"; // APPSKEY
+static const char LORIOT_DEV_ADDR[]  = "AABBCCDD"; // green
+static const char LORIOT_NWK_S_KEY[] = "E8A25EBD07F85800E08478A041FACBA7"; // orange
+static const char LORIOT_APP_S_KEY[] = "BE8EF84E745D0AB14D4507B0BA600555"; // yellow
 ```
 
 #### Verifying our setup
