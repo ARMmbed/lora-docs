@@ -33,12 +33,12 @@ There's quite some [choice in the gateways](https://www.loriot.io/gateways.html)
 
 * [Kerlink IoT station](http://www.kerlink.fr/en/products/lora-iot-station-2/lora-iot-station-868-mhz). Expensive (around 1,200 euros), but great build quality and range.
 * [Multitech Conduit](http://www.multitech.com/brands/multiconnect-conduit). About half the price of the Kerlink (around 550 euros), and pretty great for small setups (put a bigger antenna on it though).
-* Building your own with a Raspberry Pi and an [IMST iC880A](http://www.wireless-solutions.de/products/long-range-radio/ic880a) concentrator. At around 300 euros, this is the most cost-efficient option.
+* Building your own with a Raspberry Pi and an [IMST iC880A](http://webshop.imst.de/catalogsearch/result/?q=iC880A) concentrator. At around 250 euros, this is the most cost-efficient option.
 
 
 ![Self built gateway using a Raspberry Pi and an IMST iC880A](assets/lora5.jpg)
 
-*Self built LoRa gateway based on Raspberry Pi 2 and IMST iC880A. Total cost about 300 euros.*
+*Self built LoRa gateway based on Raspberry Pi 2 and IMST iC880A. Total cost about 250 euros.*
 
 For development purposes one gateway will be enough, but in a production deployment you'll want at least two, as there will always be dark spots in your network.
 
