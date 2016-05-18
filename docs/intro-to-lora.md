@@ -6,7 +6,7 @@ There is a lot of buzz around [LoRa](https://www.lora-alliance.org), a wide-area
 
 A typical LoRa network consists of four parts: devices, gateways, a network service and an application:
 
-![Topology of a LoRa network](assets/lora1.png)
+<span class="images">![Topology of a LoRa network](assets/lora1.png)<span>Topology of a LoRa network</span></span>
 
 On the hardware side we need devices and gateways, similar to how we set up a WiFi network. Gateways are very simple: they just scan the spectrum and capture LoRa packets. There is also no gateway pinning here - devices are not associated with a single gateway; thus all gateways within range of a device will receive the signal. The gateways then forward their data to a network service that handles the packet.
 
@@ -36,9 +36,8 @@ There's quite some [choice in the gateways](https://www.loriot.io/gateways.html)
 * Building your own with a Raspberry Pi and an [IMST iC880A](http://webshop.imst.de/catalogsearch/result/?q=iC880A) concentrator. At around 250 euros, this is the most cost-efficient option.
 
 
-![Self built gateway using a Raspberry Pi and an IMST iC880A](assets/lora5.jpg)
+<span class="images">![Self built gateway using a Raspberry Pi and an IMST iC880A](assets/lora5.jpg)<span>Self built LoRa gateway based on Raspberry Pi 2 and IMST iC880A. Total cost about 250 euros.</span></span>
 
-*Self built LoRa gateway based on Raspberry Pi 2 and IMST iC880A. Total cost about 250 euros.*
 
 For development purposes one gateway will be enough, but in a production deployment you'll want at least two, as there will always be dark spots in your network.
 
@@ -51,7 +50,7 @@ We'll also need to build devices. If you want to use ARM mbed (and you should) t
 
 For either of these setups we have basic firmware already available, which we'll get to later in this document.
 
-<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** When ordering hardware, always make sure that you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).</span>
+<span class="notes">**Note:** When ordering hardware, always make sure that you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).</span>
 
 ### Network server
 
@@ -65,7 +64,7 @@ As a network server just processes your data - it doesn't store it - you'll need
 
 We now need to configure our gateway by installing some software that will scan the spectrum and forward all LoRa packets to LORIOT. To do this we'll need to log into the gateway. Here are setup instructions for the three gateways mentioned earlier.
 
-<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** This section assumes that you're familiar with SSH.</span>
+<span class="notes">**Note:** This section assumes that you're familiar with SSH.</span>
 
 ### Kerlink IoT station
 
@@ -108,7 +107,7 @@ First make sure that the Raspberry Pi is connected to the internet, and that you
 
 Log into the Pi over SSH, and follow Steps 3.1 - 3.5 in [this document](http://www.wireless-solutions.de/images/stories/downloads/Radio%20Modules/iC880A/iC880A_QuickStartGuide.pdf).
 
-<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** Use [lora_gateway 2.0.0](https://github.com/Lora-net/lora_gateway/releases/tag/v2.0.0), not the latest version (run `git checkout v2.0.0` in the lora_gateway folder).</span>
+<span class="notes">**Note:** Use [lora_gateway 2.0.0](https://github.com/Lora-net/lora_gateway/releases/tag/v2.0.0), not the latest version (run `git checkout v2.0.0` in the lora_gateway folder).</span>
 
 After following these steps:
 
@@ -127,32 +126,29 @@ Now that we have set up the gateways and they can reach the internet, it's time 
 1. You're redirected to the dashboard page.
 1. Click the link to register a new gateway.
 
-    ![First step to registering a new gateway](assets/lora2.png)
+    <span class="images">![First step to registering a new gateway](assets/lora2.png)<span>First step to registering a new gateway</span></span>
 
 1. You're now taken through a wizard. Just pick the gateway you have and follow the steps.
 1. You're taken to the gateway page where you'll find the LORIOT binary for your platform, and a link to set up documentation.
 
-    ![Almost there...](assets/lora3.png)
+    <span class="images">![Almost there...](assets/lora3.png)<span>Almost there...</span></span>
 
-    **Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example:
+	<span class="tips">**Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example:
 
     ``scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/``
+</span>
 
 1. The gateway now shows as connected on the LORIOT gateway page and we're ready to work on the device.
 
-    ![Connected!](assets/lora4.png)
+    <span class="images">![Connected!](assets/lora4.png)<span>Connected!</span></span>
 
-**Tip:** LORIOT has a 'Gateway Tap', which you can access from your gateway page. This allows you to see what messages are being picked up by the gateway - very useful when debugging.
+<span class="tips">**Tip:** LORIOT has a 'Gateway Tap', which you can access from your gateway page. This allows you to see what messages are being picked up by the gateway - very useful when debugging.</span>
 
 ## Building a device
 
 Now off to the interesting work: building a device that can send sensor data over the LoRa network. For example, you can create a simple motion sensor using a [PIR sensor](https://www.adafruit.com/products/189) (under 10 euros at your local hardware store, and 2 euros when ordering from China). Of course, you are free to hook up a different sensor.
 
-
-
-![nRF51-DK, LoRa shield and a PIR sensor](assets/lora6.jpg)
-
-*PIR sensor hooked up to a Nordic Semiconductor nRF51-DK with a LoRa shield*
+<span class="images">![nRF51-DK, LoRa shield and a PIR sensor!](assets/lora6.jpg)<span>PIR sensor hooked up to a Nordic Semiconductor nRF51-DK with a LoRa shield</span></span>
 
 ### Some notes on writing firmware
 
@@ -171,8 +167,7 @@ To generate a new key pair:
 1. Click the device to go to the device page.
 1. At the bottom of the page, find *Seqno checking* and change this setting to *Relax* (call `setRelax()` from the JS console if the button does not show up).
 
-
-![Relax, take it easy](assets/lora9.png)
+<span class="images">![Relax, take it easy](assets/lora9.png)<span>Relax, take it easy</span></span>
 
 Now that we have the keys we can start writing some software.
 
@@ -189,12 +184,11 @@ Now that we have the keys we can start writing some software.
 1. You're redirected to the online compiler, where you can give the program a name.
 
 
-![Importing a program to get started](assets/lora7.png)
+	<span class="images">![Importing a program to get started](assets/lora7.png)<span>Importing a program to get started</span></span>
 
-<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** Make sure that you select the right board in the top right corner of the compiler.</span>
+<span class="notes">**Note:** Make sure that you select the right board in the top right corner of the compiler.</span>
 
-
-![Selecting the right board is kinda important](assets/lora8.png)
+<span class="images">![Selecting the right board is kinda important](assets/lora8.png)<span>Selecting the right board is kinda important</span></span>
 
 
 #### Setting shield frequency
@@ -229,7 +223,7 @@ __If you have the SX1276MB1MAS:__
 
 Now let's program the keys from LORIOT into the device firmware.
 
-![Copying the address and the keys from LORIOT into the device firmware](assets/lora17.png)
+<span class="images">![Copying the address and the keys from LORIOT into the device firmware](assets/lora17.png)<span>Copying the address and the keys from LORIOT into the device firmware</span></span>
 
 Open ``main.cpp``, and change the following lines:
 
@@ -258,9 +252,7 @@ static uint8_t ArtSKey[] =
 
 Now we can verify whether our setup works, by clicking the *Compile* button.
 
-
-
-![Compile button](assets/lora10.png)
+<span class="images">![Compile button](assets/lora10.png)<span>Compile button</span></span>
 
 When compilation succeeds a file is downloaded.
 
@@ -268,11 +260,7 @@ Plug your development board into the computer (over micro-USB) to mount it as a 
 
 Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see messages coming in to the LORIOT device page:
 
-
-
-
-![We've got data!](assets/lora11.png)
-
+<span class="images">![We've got data!](assets/lora11.png)<span>We've got data!</span></span>
 
 #### Switching to manual sending
 
@@ -339,17 +327,17 @@ Change the content of the `prepareTxFrame` function to change which data you're 
 1. Click *Import this program*.
 1. You're redirected to the online compiler where you can give the program a name.
 
-![Importing a program to get started](assets/lora12.png)
+<span class="images">![Importing a program to get started](assets/lora12.png)<span>Importing a program to get started</span></span>
 
-<span style="background-color:#E6E6E6;border:1px solid #000;display:block; height:100%; padding:10px">**Note:** Make sure that you select the right board in the top right corner of the compiler.</span>
+<span class="notes">**Note:** Make sure that you select the right board in the top right corner of the compiler.</span>
 
-![Selecting the right board is kinda important](assets/lora13.png)
+<span class="images">![Selecting the right board is kinda important](assets/lora13.png)<span>Selecting the right board is kinda important</span></span>
 
 #### Adding LORIOT keys
 
 Now let's program the keys from LORIOT into the device firmware.
 
-![Copying the address and the keys from LORIOT into the device firmware](assets/lora17.png)
+<span class="images">![Copying the address and the keys from LORIOT into the device firmware](assets/lora17.png)<span>Copying the address and the keys from LORIOT into the device firmware</span></span>
 
 Open ``main.cpp``, and copy the big endian `DevAddr` (green), the `NWKSKEY` (orange) and the `NWKSKEY` (yellow) from LORIOT into the application:
 
@@ -363,8 +351,7 @@ static const char LORIOT_APP_S_KEY[] = "BE8EF84E745D0AB14D4507B0BA600555"; // ye
 
 Now we can verify whether our setup works, by clicking the *Compile* button.
 
-
-![Compile button](assets/lora10.png)
+<span class="images">![Compile button](assets/lora10.png)<span>Compile button</span></span>
 
 When compilation succeeds a file is downloaded.
 
@@ -372,9 +359,7 @@ Plug your development board into the computer (over micro-USB) to mount it as a 
 
 Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see messages coming in to the LORIOT device page:
 
-
-![We've got data!](assets/lora11.png)
-
+<span class="images">![We've got data!](assets/lora11.png)<span>We've got data!</span></span>
 
 #### Switching to manual sending
 
@@ -387,11 +372,11 @@ Now that we have the first three parts of our network up and running, it's time 
 1. In LORIOT: go to your dashboard and click *Applications > Sample App > Output*.
 1. Change the output type to *WebSocket*.
 
-    ![Websocket](assets/lora14.png)
+	<span class="images">![Websocket](assets/lora14.png)<span>Websocket</span></span>
 
 1. Copy the URL and the token under *Current output setup* and paste them in the code sample below:
 
-    ![Retrieving the API parameters from the output tab in LORIOT](assets/lora16.png)
+	<span class="images">![Retrieving the API parameters from the output tab in LORIOT](assets/lora16.png)<span>Retrieving the API parameters from the output tab in LORIOT</span></span>
 
 ```html
 <!DOCTYPE html>
@@ -428,7 +413,7 @@ Now that we have the first three parts of our network up and running, it's time 
 
 And done! We now have a fully functioning LoRa network with a device, a gateway and a web application:
 
-![Full circle](assets/lora15.png)
+	<span class="images">![Full circle](assets/lora15.png)<span>Full circle</span></span>
 
 ## Conclusion
 
