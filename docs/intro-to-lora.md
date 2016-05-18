@@ -133,10 +133,7 @@ Now that we have set up the gateways and they can reach the internet, it's time 
 
     <span class="images">![Almost there...](assets/lora3.png)<span>Almost there...</span></span>
 
-	<span class="tips">**Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example:
-
-    ``scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/``
-</span>
+	<span class="tips">**Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example: </br>``scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/``</span>
 
 1. The gateway now shows as connected on the LORIOT gateway page and we're ready to work on the device.
 
