@@ -145,18 +145,18 @@ Now that we have set up the gateways and they can reach the internet, it's time 
 
 #### Kerlink IoT station
 
-If you follow the installation steps in the LORIOT documentation, the binary will automatically start whenever the gateway boots. No additional steps required.
+If you followed the installation steps in the LORIOT documentation, the binary will automatically start whenever the gateway boots. No additional steps required.
 
 #### Multitech Conduit
 
 1. Log in over SSH or via the serial port.
 1. Create a new file ``/etc/init.d/start-loriot.sh``. 
-1. Edit this file (f.e. via `nano /etc/init.d/start-loriot.sh`) and add the following content:
+1. Edit this file (via `nano /etc/init.d/start-loriot.sh`) and add the following content:
 
     ``cd /home/root/ && ./loriot_multitech_conduit_mCard_USB_1.0.1``
 
     * If you extracted the LORIOT binary somewhere else, edit the path. 
-    * It's important to `cd` into the folder first, otherwise LORIOT cannot find its certificate.
+    * We're CDing into the folder first, otherwise LORIOT cannot find its certificate.
 
 1. Make the file executable: `chmod +x /etc/init.d/start-loriot.sh`.
 1. Link the script: `ln -s /etc/init.d/start-loriot.sh /etc/rc5.d/S99start-loriot.sh`.
