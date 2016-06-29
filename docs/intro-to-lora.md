@@ -47,6 +47,7 @@ We'll also need to build devices. If you want to use ARM mbed (and you should) t
 
 * Get the [Multitech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [UDK2 board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
 	* As an alternative, you can use the [mDot EVB](https://developer.mbed.org/platforms/mdotevb/) which is the mDot reference design. 
+	* The mDot is already FCC/CE certified and shielded, so it's a good choice if you want to build custom hardware.
 * Get the [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) shield, and a microcontroller that runs mbed (in this article I'm using the [nrf51-DK](https://developer.mbed.org/platforms/Nordic-nRF51-DK/), although most microcontrollers will work).
 
 For either of these setups we have basic firmware already available, which we'll get to later in this document.
