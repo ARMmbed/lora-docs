@@ -32,11 +32,11 @@ In this guide we'll show you which hardware you can buy, and we'll use two onlin
 There's quite some [choice in the gateways](https://www.loriot.io/gateways.html) we can use, but I've had good experience with these three:
 
 * [Kerlink IoT station](http://www.kerlink.fr/en/products/lora-iot-station-2/lora-iot-station-868-mhz). Expensive (around 1,200 euros), but great build quality and range.
-* [Multitech Conduit](http://www.multitech.com/brands/multiconnect-conduit). About half the price of the Kerlink (around 550 euros), and pretty great for small setups (put a bigger antenna on it though).
-* Building your own with a Raspberry Pi and an [IMST iC880A](http://webshop.imst.de/catalogsearch/result/?q=iC880A) concentrator. At around 250 euros, this is the most cost-efficient option.
+* [Multitech Conduit](http://www.multitech.com/brands/multiconnect-conduit). About a third of the price of the Kerlink (around 450 euros), and pretty great for small setups (put a bigger antenna on it though). Multitech also has a [rugged outdoor](http://www.multitech.com/brands/multiconnect-conduit-ip67) version available.
+* Building your own with a Raspberry Pi and an [IMST iC880A](http://webshop.imst.de/catalogsearch/result/?q=iC880A) concentrator. At around 230 euros, this is the most cost-efficient option.
 
 
-<span class="images">![Self built gateway using a Raspberry Pi and an IMST iC880A](assets/lora5.jpg)<span>Self built LoRa gateway based on Raspberry Pi 2 and IMST iC880A. Total cost about 250 euros.</span></span>
+<span class="images">![Self built gateway using a Raspberry Pi and an IMST iC880A](assets/lora5.jpg)<span>Self built LoRa gateway based on Raspberry Pi 2 and IMST iC880A. Total cost about 230 euros.</span></span>
 
 
 For development purposes one gateway will be enough, but in a production deployment you'll want at least two, as there will always be dark spots in your network.
@@ -45,7 +45,8 @@ For development purposes one gateway will be enough, but in a production deploym
 
 We'll also need to build devices. If you want to use ARM mbed (and you should) there are two options:
 
-* Get the [Multitech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [EVK board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
+* Get the [Multitech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [UDK2 board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
+	* As an alternative, you can use the [mDot EVB](https://developer.mbed.org/platforms/mdotevb/) which is the mDot reference design. 
 * Get the [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) shield, and a microcontroller that runs mbed (in this article I'm using the [nrf51-DK](https://developer.mbed.org/platforms/Nordic-nRF51-DK/), although most microcontrollers will work).
 
 For either of these setups we have basic firmware already available, which we'll get to later in this document.
