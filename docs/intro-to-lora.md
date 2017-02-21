@@ -32,7 +32,7 @@ In this guide we'll show you which hardware you can buy, and we'll use two onlin
 There's quite some [choice in the gateways](https://www.loriot.io/gateways.html) we can use, but I've had good experience with these three:
 
 * [Kerlink IoT station](http://www.kerlink.fr/en/products/lora-iot-station-2/lora-iot-station-868-mhz). Expensive (around 1,200 euros), but great build quality and range.
-* [Multitech Conduit](http://www.multitech.com/brands/multiconnect-conduit). About a third of the price of the Kerlink (around 450 euros), and pretty great for small setups (put a bigger antenna on it though). Multitech also has a [rugged outdoor](http://www.multitech.com/brands/multiconnect-conduit-ip67) version available.
+* [Multitech Conduit](http://www.multitech.com/brands/multiconnect-conduit). About a third of the price of the Kerlink (around 450 euros), and pretty great for small setups (put a bigger antenna on it though). Multitech also has a [rugged outdoor](http://www.multitech.com/brands/multiconnect-conduit-ip67) version.
 * Building your own with a Raspberry Pi and an [IMST iC880A](http://webshop.imst.de/catalogsearch/result/?q=iC880A) concentrator. At around 230 euros, this is the most cost-efficient option.
 
 
@@ -43,12 +43,17 @@ For development purposes one gateway will be enough, but in a production deploym
 
 ### Getting a device
 
-We'll also need to build devices. If you want to use ARM mbed (and you should) there are two options:
+We'll also need to build devices. If you want to use ARM mbed (and you should) you can either get:
 
-* Get the [Multitech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [UDK2 board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
-	* As an alternative, you can use the [mDot EVB](https://developer.mbed.org/platforms/mdotevb/) which is the mDot reference design. 
-	* The mDot is already FCC/CE certified and shielded, so it's a good choice if you want to build custom hardware.
-* Get the [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) shield, and a microcontroller that runs mbed (in this article I'm using the [nrf51-DK](https://developer.mbed.org/platforms/Nordic-nRF51-DK/), although most microcontrollers will work).
+* A development board with a LoRa transceiver:
+    * [Multitech xDot](https://developer.mbed.org/platforms/MTS-xDot-L151CC/).
+        * The xDot is already FCC/CE certified and shielded, so it's a good choice if you want to build custom hardware.
+    * [Multitech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [UDK2 board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
+        * As an alternative, you can use the [mDot EVB](https://developer.mbed.org/platforms/mdotevb/), which is the mDot reference design.
+        * Like the xDot, the mDot is already FCC/CE certified and shielded.
+* A microcontroller that runs mbed (in this article I'm using the [nrf51-DK](https://developer.mbed.org/platforms/Nordic-nRF51-DK/), although most microcontrollers will work) with a LoRa shield:
+    * [SX1272MB2xAS](https://developer.mbed.org/components/SX1272MB2xAS/) - shield based on the SX1272 transceiver.
+    * [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) - shield based on the SX1276 transceiver.
 
 For either of these setups we have basic firmware already available, which we'll get to later in this document.
 
@@ -152,12 +157,12 @@ If you followed the installation steps in the LORIOT documentation, the binary w
 #### Multitech Conduit
 
 1. Log in over SSH or via the serial port.
-1. Create a new file ``/etc/init.d/start-loriot.sh``. 
+1. Create a new file ``/etc/init.d/start-loriot.sh``.
 1. Edit this file (via `nano /etc/init.d/start-loriot.sh`) and add the following content:
 
     ``cd /home/root/ && ./loriot_multitech_conduit_mCard_USB_1.0.1``
 
-    * If you extracted the LORIOT binary somewhere else, edit the path. 
+    * If you extracted the LORIOT binary somewhere else, edit the path.
     * We're CDing into the folder first, otherwise LORIOT cannot find its certificate.
 
 1. Make the file executable: `chmod +x /etc/init.d/start-loriot.sh`.
