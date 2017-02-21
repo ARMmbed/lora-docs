@@ -165,8 +165,8 @@ If you followed the installation steps in the LORIOT documentation, the binary w
     * If you extracted the LORIOT binary somewhere else, edit the path.
     * We're CDing into the folder first, otherwise LORIOT cannot find its certificate.
 
-1. Make the file executable: `chmod +x /etc/init.d/start-loriot.sh`.
-1. Link the script: `ln -s /etc/init.d/start-loriot.sh /etc/rc5.d/S99start-loriot.sh`.
+1. Make the file executable: `chmod +x /etc/init.d/start-loriot.sh`
+1. Link the script: `ln -s /etc/init.d/start-loriot.sh /etc/rc5.d/S99start-loriot.sh`
 1. Now reboot the gateway and verify that the LORIOT binary is running (via `ps aux | grep loriot`).
 
 #### Raspberry Pi and IMST iC880A
@@ -181,8 +181,15 @@ Now off to the interesting work: building a device that can send sensor data ove
 
 ### Some notes on writing firmware
 
-1. You cannot send data constantly because of duty cycle limitations. This is a requirement of using the open spectrum. If you send too quickly, sending will fail.
-1. A disadvantage of the LoRa shield is that it blocks all the pins. You can solder some new headers on the back of the shield to add new peripherals, or use a microcontroller like the nRF51-DK that has the pins available twice, once through hole connectors and once through female headers.
+#### Sending data constantly
+
+You cannot send data constantly because of duty cycle limitations. This is a requirement of using the open spectrum. If you send too quickly, sending will fail. How fast you are allowed to send depends on the spread factor that you use. With a higher spread factor it takes longer to send a message - although the chance that it will be received by a gateway increases - thus you'll need to wait longer before you can send again. During development you can set the spread factor to SF7 (the lowest) so you can send every 6-7 seconds.
+
+LoRaWAN has a feature called Adaptive Data Rating (ADR) where the network can control the spread factor. You probably want this enabled.
+
+#### Blocking pins
+
+A disadvantage of the LoRa shield is that it blocks all the pins. You can solder some new headers on the back of the shield to add new peripherals, or use a microcontroller like the nRF51-DK that has the pins available twice, once through hole connectors and once through female headers.
 
 ### Registering the device on LORIOT
 
