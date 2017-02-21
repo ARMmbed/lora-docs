@@ -55,7 +55,7 @@ We'll also need to build devices. If you want to use ARM mbed (and you should) y
     * [SX1272MB2xAS](https://developer.mbed.org/components/SX1272MB2xAS/) - shield based on the SX1272 transceiver.
     * [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) - shield based on the SX1276 transceiver.
 
-For either of these setups we have basic firmware already available, which we'll get to later in this document.
+In this document we show how to connect the Multitech mDot and the SX1276MB1xAS shield, but the same principles apply to all other combinations.
 
 <span class="notes">**Note:** When ordering hardware, always make sure that you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).</span>
 
