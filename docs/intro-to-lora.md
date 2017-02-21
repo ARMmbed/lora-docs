@@ -2,6 +2,8 @@
 
 There is a lot of buzz around [LoRa](https://www.lora-alliance.org), a wide-area network solution that promises kilometers of range with very low power consumption; a perfect fit for the Internet of Things. A number of telecom operators are currently rolling out networks, but because LoRa operates in the [open spectrum](https://en.wikipedia.org/wiki/ISM_band) you can also set up your own network. In this article we'll go over all the pieces required to build a private LoRa network, and how to use the network to send data from an ARM mbed end-node to the cloud.
 
+<span class="notes">**Note on LoRa vs. LoRaWAN:** Technically, we're building a LoRaWAN network in this article. LoRa is the modulation technique used (PHY) and LoRaWAN is the network protocol on top of the physical layer (MAC).</span>
+
 ## Requirements
 
 A typical LoRa network consists of four parts: devices, gateways, a network service and an application:
@@ -142,6 +144,7 @@ Now that we have set up the gateways and they can reach the internet, it's time 
 
 	<span class="tips">**Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example: </br>``scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/``</span>
 
+1. On the gateway, run the LORIOT binary.
 1. The gateway now shows as connected on the LORIOT gateway page and we're ready to work on the device.
 
     <span class="images">![Connected!](assets/lora4.png)<span>Connected!</span></span>
