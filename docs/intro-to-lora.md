@@ -88,8 +88,6 @@ To configure the Kerlink:
 1. To quickly find the gateway you can look in the DHCP table on your router, or use [nmap](http://nmap.org) via `nmap -p 22 192.168.2.*` (if that's your subnet).
 1. You can now log into the gateway through SSH, with the username `root` and password `root`.
 
-Often the Kerlink IoT station comes pre-configured with the packet forwarder (run `ps | grep pkt` to see if one is running). If this is the case, make sure the packet forwarder does not start on startup by removing the entry from `/etc/init.d`.
-
 ### Multitech Conduit
 
 The Conduit is unfortunately configured with DHCP disabled, so we need to enable this first. There are two options: Ethernet and micro-USB.
@@ -106,7 +104,9 @@ __Over micro-USB__
 
 1. Connect to the Conduit using a micro-USB cable.
 1. The gateway appears as a serial device.
-1. You can use a program like [GNU screen](https://www.gnu.org/software/screen/) or [PuTTY](http://putty.org) to log into the gateway.
+1. You can use a program like [GNU screen](https://www.gnu.org/software/screen/) or [PuTTY](http://putty.org) to log into the gateway, with the username `root` and password `root`.
+
+<span class="notes">**Note when logging in fails:** If logging in as `root` fails, but you can log in with the username `admin` and the password `admin` you are running the AEP firmware. To proceed you need to update your gateway firmware to mLinux. Instructions are [here](http://www.multitech.net/developer/software/mlinux/using-mlinux/flashing-mlinux-firmware-for-conduit/).</span>
 
 Now that we are connected we can set up the gateway:
 

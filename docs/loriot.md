@@ -4,6 +4,8 @@ If you haven't done so, read [Building your own private LoRa network](intro-to-l
 
 Now that we have set up the gateways and they can reach the internet, it's time to install the LORIOT software on them, so they have a place to send the LoRa packets.
 
+<span class="notes">**Note on the Kerlink IoT station:** Often the Kerlink IoT station comes pre-configured with the packet forwarder (run `ps | grep pkt` to see if one is running). If this is the case, make sure the packet forwarder does not start on startup by removing the entry from `/etc/init.d`.</span>
+
 ## Installing the LORIOT software
 
 1. [Sign up](https://eu1.loriot.io/register.html) for an account.
@@ -94,7 +96,7 @@ Now that we have the keys we can start writing some software.
 
 <span class="notes">**Note:** Make sure that you select the right board in the top right corner of the compiler.</span>
 
-<span class="images">![Selecting the right board is kinda important](assets/lora8.png)<span>Selecting the right board is kinda important</span></span>
+<span class="images">![Selecting the right board](assets/lora8.png)<span>Selecting the right board</span></span>
 
 
 #### Setting shield frequency
@@ -237,7 +239,7 @@ Change the content of the `prepareTxFrame` function to change which data you're 
 
 <span class="notes">**Note:** Make sure that you select the right board in the top right corner of the compiler.</span>
 
-<span class="images">![Selecting the right board is kinda important](assets/lora13.png)<span>Selecting the right board is kinda important</span></span>
+<span class="images">![Selecting the right board](assets/lora13.png)<span>Selecting the right board</span></span>
 
 #### Adding LORIOT keys
 
