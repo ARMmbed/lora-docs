@@ -287,12 +287,29 @@ Open ``examples\src\ota_example.cpp.cpp``, and change the following code:
 ```cpp
 static uint8_t network_id[] = { 0x6C, 0x4E, 0xEF, 0x66, 0xF4, 0x79, 0x86, 0xA6 };
 static uint8_t network_key[] = { 0x1F, 0x33, 0xA1, 0x70, 0xA5, 0xF1, 0xFD, 0xA0, 0xAB, 0x69, 0x7A, 0xAE, 0x2B, 0x95, 0x91, 0x6B };
+static uint8_t frequency_sub_band = 0;
+static bool public_network = false;
 ```
 
 * Set `network_id` to the application's 'Unique Identifier' (purple box).
 * Set `network_key` to the device's 'App Key' (red box).
+* Set `public_network` to `true`.
 
 <span class="notes">**Note:** Turn them into hex numbers. For example, a key of `5ADA30AA` should be `0x5A, 0xDA, 0x30, 0xAA` in your code.</span>
+
+In addition, change:
+
+```cpp
+        update_ota_config_name_phrase(network_name, network_passphrase, frequency_sub_band, public_network, ack);
+        // update_ota_config_id_key(network_id, network_key, frequency_sub_band, public_network, ack);
+```
+
+into:
+
+```cpp
+        // update_ota_config_name_phrase(network_name, network_passphrase, frequency_sub_band, public_network, ack);
+        update_ota_config_id_key(network_id, network_key, frequency_sub_band, public_network, ack);
+```
 
 #### Verifying our setup
 
