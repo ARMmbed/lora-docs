@@ -6,7 +6,7 @@ Now that we have set up the gateways and they can reach the internet, it's time 
 
 ## Installing the LoRa packet forwarder
 
-The [LoRa packet forwarder](https://github.com/Lora-net/packet_forwarder) is an open-source application that runs on a gateway and forwards captured LoRa packets to a host of your choice. We can install the packet forwarder and configure it to send it's data to IoT-X.
+The [LoRa packet forwarder](https://github.com/Lora-net/packet_forwarder) is an open-source application that runs on a gateway and forwards captured LoRa packets to a host of your choice. We can install the packet forwarder and configure it to send its data to IoT-X.
 
 To install the packet forwarder follow these instructions:
 
