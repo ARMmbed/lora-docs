@@ -21,6 +21,7 @@ Now that you have set up the gateways and they can reach the internet, it's time
 
 	<span class="tips">**Tip:** Use a tool like scp to copy the binary from your computer to the gateway. For example: </br>``scp ~/Downloads/loriot_pi_2_iC880A_USB_1.0.1.tar pi@192.168.2.7:~/``</span>
 
+1. On the gateway, run the LORIOT binary.
 1. The gateway shows as connected on the LORIOT gateway page. You're ready to work on the device.
 
     <span class="images">![Connected!](assets/lora4.png)<span>Connected!</span></span>
@@ -44,8 +45,8 @@ If you followed the installation steps in the LORIOT documentation, the binary a
     * If you extracted the LORIOT binary somewhere else, edit the path.
     * CD into the folder first; otherwise, LORIOT cannot find its certificate.
 
-1. Make the file executable: `chmod +x /etc/init.d/start-loriot.sh`.
-1. Link the script: `ln -s /etc/init.d/start-loriot.sh /etc/rc5.d/S99start-loriot.sh`.
+1. Make the file executable: `chmod +x /etc/init.d/start-loriot.sh`
+1. Link the script: `ln -s /etc/init.d/start-loriot.sh /etc/rc5.d/S99start-loriot.sh`
 1. Now, reboot the gateway, and verify that the LORIOT binary is running (via `ps aux | grep loriot`).
 
 #### Raspberry Pi and IMST iC880A
@@ -60,8 +61,15 @@ Now to the interesting work: building a device that can send sensor data over th
 
 ### Some notes on writing firmware
 
-- You cannot send data constantly because of duty cycle limitations. This is a requirement of using the open spectrum. If you send too quickly, sending will fail.
-- A disadvantage of the LoRa shield is that it blocks all the pins. You can solder new headers on the back of the shield to add new peripherals or use a microcontroller, such as the nRF51-DK, that has the pins available twice, once through hole connectors and once through female headers.
+#### Sending data constantly
+
+You cannot send data constantly because of duty cycle limitations. This is a requirement of using the open spectrum. If you send too quickly, sending will fail. How fast you are allowed to send depends on the spread factor that you use. With a higher spread factor, it takes longer to send a message - though the chance that it will be received by a gateway increases. Thus, you need to wait longer before you can send again. During development, you can set the spread factor to SF7 (the lowest), so you can send every 6-7 seconds.
+
+LoRaWAN has a feature called Adaptive Data Rating (ADR), through which the network can control the spread factor. You probably want this enabled.
+
+#### Blocking pins
+
+A disadvantage of the LoRa shield is that it blocks all the pins. You can solder some new headers on the back of the shield to add new peripherals, or use a microcontroller like the nRF51-DK that has the pins available twice, once through hole connectors and once through female headers.
 
 ### Registering the device on LORIOT
 
