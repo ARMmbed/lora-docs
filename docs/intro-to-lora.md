@@ -10,18 +10,18 @@ A typical LoRa network consists of four parts: devices, gateways, a network serv
 
 <span class="images">![Topology of a LoRa network](assets/lora1.png)<span>Topology of a LoRa network</span></span>
 
-For hardware, you need devices and gateways, similar to how you would set up a Wi-Fi network. Gateways scan the spectrum and capture LoRa packets. There is no gateway pinning here - devices are not associated with a single gateway; thus, all gateways within range of a device receive the signal. The gateways then forward their data to a network service that handles the packet.
+For hardware, you need devices and gateways, similar to how you would set up a Wi-Fi network. Gateways are simple: they just scan the spectrum and capture LoRa packets. There is no gateway pinning here - devices are not associated with a single gateway; thus, all gateways within range of a device receive the signal. The gateways then forward their data to a network service that handles the packet.
 
 The network service deduplicates packets when multiple gateways receive the same packet, decrypts the message (everything is end-to-end encrypted), handles LoRa features such as adaptive data rating and so on. It then forwards the decrypted data to your application.
 
 There are five requirements.
 
-Hardware:
+We need hardware:
 
 * Gateways.
 * Devices.
 
-Software:
+And we need software:
 
 * Device firmware.
 * A network service.
@@ -31,9 +31,9 @@ This guide shows you which hardware you can buy and two online services you can 
 
 ### Getting a gateway
 
-You have [choices in the gateways](https://www.loriot.io/gateways.html) you can use, but we've had good experience with these three:
+You have [a lot of choices in the gateways](https://www.loriot.io/gateways.html) you can use, but we've had good experience with these three:
 
-* [Kerlink IoT station](http://www.kerlink.fr/en/products/lora-iot-station-2/lora-iot-station-868-mhz). Expensive (around 1,200 euros) but great build quality and range.
+* [Kerlink IoT station](http://www.kerlink.fr/en/products/lora-iot-station-2/wirnet-station-868). Expensive (around 1,200 euros) but great build quality and range.
 * [MultiTech Conduit](http://www.multitech.com/brands/multiconnect-conduit). About one-third of the price of the Kerlink (about 450 euros) and good for small setups. (Put a bigger antenna on it though.) MultiTech also has a [rugged outdoor](http://www.multitech.com/brands/multiconnect-conduit-ip67) version.
 * Building your own with a Raspberry Pi and an [IMST iC880A](http://webshop.imst.de/catalogsearch/result/?q=iC880A) concentrator. At about 230 euros, this is the most cost-efficient option.
 
@@ -55,13 +55,13 @@ You also need to build devices. If you use ARM mbed (and you should), you can ei
     * [SX1272MB2xAS](https://developer.mbed.org/components/SX1272MB2xAS/) - shield based on the SX1272 transceiver.
     * [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) - shield based on the SX1276 transceiver.
 
-This document shows how to connect the MultiTech mDot and the SX1276MB1xAS shield, but the same principles apply to all other combinations.
+This document contains instructions for the MultiTech mDot and the SX1276MB1xAS shield, but the same principles apply to all other combinations.
 
 <span class="notes">**Note:** When ordering hardware, always make sure you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).</span>
 
 ### Network server
 
-For software, you need a server that understands the LoRa protocol and can interpret the data the device sends. It's possible to roll your own (Semtech can give you its reference implementation if you sign an NDA), but there are also companies building LoRa network servers as a service, handling everything on your behalf. This article discusses two such services: the Switzerland-based startup [LORIOT](https://loriot.io), and [IoT-X](http://iot-x.com) from the UK-based Stream Technologies.
+Now on to the software side. You need a server that understands the LoRa protocol and can interpret the data the device sends. It's possible to roll your own (Semtech can give you its reference implementation if you sign an NDA), but there are also companies building LoRa network servers as a service, handling everything on your behalf. This article discusses two such services: the Switzerland-based startup [LORIOT](https://loriot.io), and [IoT-X](http://iot-x.com) from the UK-based Stream Technologies.
 
 Because a network server only processes your data and doesn't store it, you need a place to store your messages, as well. Both services allow you to hook into their service over a TCP socket, websocket or MQTT client and forward your data to the cloud service of your choice (or straight to your application).
 
@@ -75,7 +75,7 @@ IoT-X is a connectivity management platform from Stream Technologies, which hand
 
 ## Setting up the gateway
 
-You now need to configure the gateway by installing software that scans the spectrum and forwards all LoRa packets to the network server. To do this, log into the gateway. Below are setup instructions for the three gateways suggested earlier.
+You now need to configure the gateway by installing software that scans the spectrum and forwards all LoRa packets to the network server. To do this, you will need to log into the gateway. Below are setup instructions for the three gateways suggested earlier.
 
 <span class="notes">**Note:** This section assumes that you're familiar with SSH.</span>
 
@@ -90,7 +90,7 @@ To configure the Kerlink:
 
 ### MultiTech Conduit
 
-The Conduit is configured with DHCP disabled, so you need to enable this first. There are two options: Ethernet and micro-USB.
+The Conduit is configured with DHCP disabled, so you need to enable this first. There are two options to do this: either via Ethernet or via micro-USB.
 
 __Using Ethernet__
 

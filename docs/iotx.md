@@ -48,18 +48,25 @@ Next you need a configuration file for the packet forwarder, which you can retri
 
 ## Building a device
 
-Now to the interesting work: building a device that can send sensor data over the LoRa network. For example, you can create a simple motion sensor using a [PIR sensor](https://www.adafruit.com/products/189) (under 10 euros at your local hardware store, and 2 euros when ordering from China). Of course, you can use a different sensor.
+Now to the interesting work: building a device that can send sensor data over the LoRa network. For example, you can create a simple motion sensor using a [PIR sensor](https://www.adafruit.com/products/189) (under 10 euros at your local hardware store, and 2 euros when ordering from China). Of course, you can use any other sensor.
 
 <span class="images">![nRF51-DK, LoRa shield and a PIR sensor!](assets/lora6.jpg)<span>PIR sensor hooked up to a Nordic Semiconductor nRF51-DK with a LoRa shield</span></span>
 
 ### Some notes on writing firmware
 
-- You cannot send data constantly because of duty cycle limitations. This is a requirement of using the open spectrum. If you send too quickly, sending will fail.
-- A disadvantage of the LoRa shield is that it blocks all the pins. You can solder new headers on the back of the shield to add new peripherals or use a microcontroller such as the nRF51-DK that has the pins available twice, once through hole connectors and once through female headers.
+#### Sending data constantly
+
+You cannot send data constantly because of duty cycle limitations. This is a requirement of using the open spectrum. If you send too quickly, sending will fail. How fast you are allowed to send depends on the spread factor that you use. With a higher spread factor, it takes longer to send a message - though the chance that it will be received by a gateway increases. Thus, you need to wait longer before you can send again. During development, you can set the spread factor to SF7 (the lowest), so you can send every 6-7 seconds.
+
+LoRaWAN has a feature called Adaptive Data Rating (ADR), through which the network can control the spread factor. You probably want this enabled.
+
+#### Blocking pins
+
+A disadvantage of the LoRa shield is that it blocks all the pins. You can solder some new headers on the back of the shield to add new peripherals, or use a microcontroller like the nRF51-DK that has the pins available twice, once through hole connectors and once through female headers.
 
 ### Registering the device on IoT-X
 
-LoRa is end-to-end encrypted, with two sets of keys. You'll need to program these keys and a device ID into the device firmware. You'll use these keys to sign our messages and be verified by the network server.
+LoRa is end-to-end encrypted, with two sets of keys. You'll need to program these keys and a device ID into the device firmware. You'll use these keys to sign your messages and be verified by the network server.
 
 To generate a new key pair:
 
@@ -189,7 +196,7 @@ Now you can verify whether the setup works by clicking the *Compile* button.
 
 When compilation succeeds, a file is downloaded.
 
-Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you don't need a driver, but you can find drivers [here](https://developer.mbed.org/handbook/Windows-serial-configuration) just in case.
+Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you don't need a driver, but you can find drivers [here](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/printf/) just in case.
 
 Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see messages coming in to the IoT-X application page:
 
@@ -319,7 +326,7 @@ Now you can verify whether the setup works by clicking the *Compile* button.
 
 When compilation succeeds, a file is downloaded.
 
-Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you don't need a driver, but you can find drivers [here](https://developer.mbed.org/handbook/Windows-serial-configuration) just in case.
+Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you don't need a driver, but you can find drivers [here](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/printf/) just in case.
 
 Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see messages coming in to the IoT-X application page:
 

@@ -55,7 +55,7 @@ Follow the steps on [this page](http://raspberrypi.stackexchange.com/questions/8
 
 ## Building a device
 
-Now to the interesting work: building a device that can send sensor data over the LoRa network. For example, you can create a motion sensor using a [PIR sensor](https://www.adafruit.com/products/189) (less than 10 euros at your local hardware store and 2 euros when ordering from China). Of course, you can use a different sensor.
+Now to the interesting work: building a device that can send sensor data over the LoRa network. For example, you can create a motion sensor using a [PIR sensor](https://www.adafruit.com/products/189) (less than 10 euros at your local hardware store and 2 euros when ordering from China). Of course, you can use any other sensor.
 
 <span class="images">![nRF51-DK, LoRa shield and a PIR sensor!](assets/lora6.jpg)<span>PIR sensor hooked up to a Nordic Semiconductor nRF51-DK with a LoRa shield</span></span>
 
@@ -83,7 +83,7 @@ To generate a new key pair:
 1. Click the device to go to the device page.
 1. At the bottom of the page, find *Seqno checking*, and change this setting to *Relax*. (Call `setRelax()` from the JS console if the button does not show up).
 
-<span class="images">![Relax, take it easy](assets/lora9.png)<span>Relax, take it easy</span></span>
+<span class="images">![Disabling strict sequence number checking](assets/lora9.png)<span>Disabling strict sequence number checking</span></span>
 
 Now that you have the keys, you can start writing software.
 
@@ -172,7 +172,7 @@ Now you can verify whether the setup works by clicking the *Compile* button.
 
 When compilation succeeds, a file is downloaded.
 
-Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you should not need a driver, but you can find drivers [here](https://developer.mbed.org/handbook/Windows-serial-configuration) just in case.
+Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you should not need a driver, but you can find drivers [here](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/printf/) just in case.
 
 Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see messages coming in to the LORIOT device page:
 
@@ -271,7 +271,7 @@ Now you can verify whether the setup works by clicking the *Compile* button.
 
 When compilation succeeds, a file is downloaded.
 
-Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you don't need a driver, but you can find drivers [here](https://developer.mbed.org/handbook/Windows-serial-configuration) just in case.
+Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you don't need a driver, but you can find drivers [here](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/printf/) just in case.
 
 Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see messages coming in to the LORIOT device page:
 
@@ -329,7 +329,7 @@ Now that the first three parts of the network are working, it's time to use the 
 
 You now have a fully functioning LoRa network with a device, a gateway and a web application:
 
-	<span class="images">![Full circle](assets/lora15.png)<span>Full circle</span></span>
+<span class="images">![Full circle](assets/lora15.png)<span>Full circle</span></span>
 
 ## Conclusion
 
