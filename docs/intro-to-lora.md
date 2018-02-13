@@ -1,6 +1,6 @@
 # Building your own private LoRa network
 
-There is a lot of buzz about [LoRa](https://www.lora-alliance.org), a wide-area network solution that promises kilometers of range with very low power consumption, a perfect fit for the Internet of Things. Telecom operators are rolling out LoRa networks, but because LoRa operates in the [open spectrum](https://en.wikipedia.org/wiki/ISM_band), you can also set up your own network. This article discusses the requirements to build a private LoRa network and how to use the network to send data from an ARM mbed end-node to the cloud.
+There is a lot of buzz about [LoRa](https://www.lora-alliance.org), a wide-area network solution that promises kilometers of range with very low power consumption, a perfect fit for the Internet of Things. Telecom operators are rolling out LoRa networks, but because LoRa operates in the [open spectrum](https://en.wikipedia.org/wiki/ISM_band), you can also set up your own network. This article discusses the requirements to build a private LoRa network and how to use the network to send data from an Arm Mbed end-node to the cloud.
 
 <span class="notes">**Note on LoRa vs. LoRaWAN:** Technically, we're building a LoRaWAN network in this article. LoRa is the modulation technique used (PHY), and LoRaWAN is the network protocol on top of the physical layer (MAC).</span>
 
@@ -47,7 +47,7 @@ For development purposes, one gateway is enough, but in a production deployment,
 
 ### Getting a device
 
-You also need to build devices. If you use ARM mbed (and you should), you can either use:
+You also need to build devices. If you use Mbed OS (and you should), you can either use:
 
 * A development board with a LoRa transceiver:
     * [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/).
@@ -65,7 +65,7 @@ This document contains instructions for the Multi-Tech mDot and the [Nordic Semi
 
 ### Network server
 
-Now on to the software side. You need a server that understands the LoRa protocol and can interpret the data the device sends. It's possible to roll your own (Semtech can give you its reference implementation if you sign an NDA), but there are also companies building LoRa network servers as a service, handling everything on your behalf. This article uses [The Things Network](https://www.thethingsnetwork.org), an open source, globally distributed network service that also has a free hosted plan.
+Now on to the software side. You need a server that understands the LoRa protocol and can interpret the data the device sends. It's possible to roll your own (Semtech can give you its reference implementation if you sign an NDA), but there are also companies building LoRa network servers as a service, handling everything on your behalf. This article uses [The Things Network](https://www.thethingsnetwork.org), an open source, globally distributed network service that also has a free hosted community edition.
 
 Because a network server only processes your data and doesn't store it, you need a place to store your messages, as well. The Things Network allows you to hook into their service through an MQTT client and forward your data to the cloud service of your choice (or straight to your application).
 
@@ -127,11 +127,9 @@ After following these steps:
 
 1. You see 'INFO: concentrator started, packet can now be received', which indicates that everything is functioning.
 
-## Setting up the network server
+## Installing the packet forwarder
 
-Now that you have set up the gateways and they can reach the internet, it's time to install the The Things Network software on them, so they have a place to send the LoRa packets.
-
-<span class="notes">**Note on the Kerlink IoT station:** Often, the Kerlink IoT station comes preconfigured with the packet forwarder (run `ps | grep pkt` to see if one is running). If this is the case, make sure the packet forwarder does not start on startup by removing the entry from `/etc/init.d`.</span>
+Now that you have set up the gateways and they can reach the internet, it's time to install the The Things Network software on them, so they have a place to send the LoRa packets. This software is called a 'packet forwarder' - as it captures LoRa packets and forwards them.
 
 ### Registering the gateway
 
@@ -141,7 +139,7 @@ Now that you have set up the gateways and they can reach the internet, it's time
 
     <span class="images">![Gateways](assets/ttn1.png)</span>
 
-1. Click *Add a new gateway*.
+1. Click *Register gateway*.
 
     <span class="images">![Add a new gateway](assets/ttn2.png)</span>
 
@@ -157,6 +155,8 @@ Now that you have set up the gateways and they can reach the internet, it's time
 ### Installing the packet forwarder
 
 **Kerlink IoT station**
+
+<span class="notes">**Note on the Kerlink IoT station:** Often, the Kerlink IoT station comes preconfigured with the packet forwarder (run `ps | grep pkt` to see if one is running). If this is the case, make sure the packet forwarder does not start on startup by removing the entry from `/etc/init.d`.</span>
 
 ??
 
@@ -194,36 +194,25 @@ Now that you have set up the gateways and they can reach the internet, it's time
 
 <span class="tips">**Tip:** TTN has a 'Traffic' tab, which you can access from your gateway page. This allows you to see what messages the gateway is picking up, which is useful when debugging.</span>
 
-### Automatically starting the LORIOT binary when the gateway starts
+### Automatically starting the packet forwarder binary when the gateway starts
 
 #### Kerlink IoT station
 
-If you followed the installation steps in the LORIOT documentation, the binary automatically starts whenever the gateway boots.
+???
 
 #### MultiTech Conduit
 
-1. Log in over SSH or via the serial port.
-1. Create a new file `/etc/init.d/start-loriot.sh`.
-1. Edit this file (via `nano /etc/init.d/start-loriot.sh`), and add the following content:
-
-    ``cd /home/root/ && ./loriot_multitech_conduit_mCard_USB_1.0.1``
-
-    * If you extracted the LORIOT binary somewhere else, edit the path.
-    * CD into the folder first; otherwise, LORIOT cannot find its certificate.
-
-1. Make the file executable: `chmod +x /etc/init.d/start-loriot.sh`
-1. Link the script: `ln -s /etc/init.d/start-loriot.sh /etc/rc5.d/S99start-loriot.sh`
-1. Now, reboot the gateway, and verify that the LORIOT binary is running (via `ps aux | grep loriot`).
+???
 
 #### Raspberry Pi and IMST iC880A
 
-Follow the steps on [this page](http://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up) to start the LORIOT binary when the Raspberry Pi starts up.
+Follow the steps on [this page](http://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up) to start the packet forwarder when the Raspberry Pi starts up.
 
 ## Building a device
 
 Now to the interesting work: building a device that can send sensor data over the LoRa network. For example, you can create a motion sensor using a [PIR sensor](https://www.adafruit.com/products/189) (less than 10 euros at your local hardware store and 2 euros when ordering from China). Of course, you can use any other sensor.
 
-<span class="images">![nRF51-DK, LoRa shield and a PIR sensor!](assets/lora6.jpg)<span>PIR sensor hooked up to a Nordic Semiconductor nRF51-DK with a SX1276 LoRa shield</span></span>
+<span class="images">![nRF51-DK, LoRa shield and a PIR sensor](assets/lora6.jpg)<span>PIR sensor hooked up to a Nordic Semiconductor nRF51-DK with a SX1276 LoRa shield</span></span>
 
 ### Some notes on writing firmware
 
@@ -235,7 +224,7 @@ LoRaWAN has a feature called Adaptive Data Rating (ADR), through which the netwo
 
 #### Blocking pins
 
-A disadvantage of the SX1276 LoRa shield is that it blocks a lot of pins. You can solder some new headers on the back of the shield to add new peripherals, or use a microcontroller like the nRF51-DK or a NUCLEO board that has more pins available than just the Arduino headers.
+A disadvantage of the SX1272 and SX1276 LoRa shields is that they block a lot of pins. You can solder some new headers on the back of the shield to add new peripherals, or use a microcontroller like the nRF51-DK or a NUCLEO board that has more pins available than just the Arduino headers.
 
 ## Registering the device on The Things Network
 
@@ -247,37 +236,48 @@ The device EUI and application EUI are globally unique identifiers. You can buy 
 
 Let's register the device in The Things Network and generate some keys:
 
-1. Go to The Things Network console.
+1. Go to [The Things Network console](https://console.thethingsnetwork.org).
 1. Click *Applications*.
-1. Click *Create new application*.
+1. Click *Add application*.
 
+    <span class="images">![Add application in TTN](assets/ttn8.png)</span>
 
-LoRa is end-to-end encrypted, with two sets of keys. You'll need to program these keys and a device ID into the device firmware. You'll use these keys to sign messages and be verified by the network server.
+1. Fill in the details of your application, and click *Add application*.
 
-To generate a new key pair:
+    <span class="images">![Application details](assets/ttn9.png)<span>Filling in the application details in The Things Network.</span></span>
 
-1. Go to the LORIOT dashboard.
-1. Click *Applications > Sample App > Manage Devices > Generate New Device*.
-1. A device is added to the list.
-1. Click the device to go to the device page.
-1. At the bottom of the page, find *Seqno checking*, and change this setting to *Relax*. (Call `setRelax()` from the JS console if the button does not show up).
+1. You're redirected to the application page. Under *Devices*, click *Register device*.
 
-<span class="images">![Disabling strict sequence number checking](assets/lora9.png)<span>Disabling strict sequence number checking</span></span>
+    <span class="images">![Register device](assets/ttn10.png)</span>
 
-Now that you have the keys, you can start writing software.
+1. If your device has an EUI printed on it, fill this in under 'Device EUI'.
 
-### Using the LoRa shield
+    <span class="images">![Device EUI on a LoRa module](assets/ttn11.png)<span>The device EUI is often printed on the module, or on the box.</span></span>
 
+1. If your device does not have an EUI printed on it, press the 'generate' button. Do not make an EUI up, these EUIs need to be globally unique. Clicking 'generate' will allocate you an EUI from a block owned by The Things Network.
 
-#### Importing the boilerplate program into the online IDE
+    <span class="images">![Generating Device EUI](assets/ttn12.png)</span>
 
-1. [Sign up](https://developer.mbed.org/account/signup/?next=%2F) for an account on ARM mbed, which hosts the Online Compiler you'll be using.
-1. Find your microcontroller on [the Platforms page](https://developer.mbed.org/platforms/).
+1. Fill in the rest of the details and click *Register*.
+
+    <span class="images">![Registering a new device in TTN](assets/ttn13.png)</span>
+
+1. The device page opens. It contains the keys that your device should use when authenticating with the network. Click the `<>` button to get the keys as a byte array. This makes it easy to copy the keys into code.
+
+    <span class="images">![Showing device keys in TTN](assets/ttn14.png)</span>
+
+Now that the device is registered in The Things Network we can start writing some code!
+
+## Importing the demo application
+
+Mbed comes with an Online Compiler which you can use to build applications, without needing to install anything on your computer (although we do have [offline tools]()).
+
+1. [Sign up](https://os.mbed.com/account/signup/?next=%2F) for an account on Arm Mbed, which hosts the Online Compiler you'll be using.
+1. Find your development board on [the Platforms page](https://developer.mbed.org/platforms/).
 1. Click *Add to your mbed compiler*.
-1. Go to [LoRaWAN-lmic-app](https://developer.mbed.org/teams/Semtech/code/LoRaWAN-lmic-app/).
+1. Go to [mbed-os-example-lorawan]().
 1. Click *Import this program*.
 1. You're redirected to the Online Compiler, where you can give the program a name.
-
 
 	<span class="images">![Importing a program to get started](assets/lora7.png)<span>Importing a program to get started</span></span>
 
@@ -285,231 +285,164 @@ Now that you have the keys, you can start writing software.
 
 <span class="images">![Selecting the right board](assets/lora8.png)<span>Selecting the correct board</span></span>
 
+### Setting keys
 
-#### Setting shield frequency
+In the Online Compiler:
 
-You need to set the correct frequency for the version of the shield you have (and where you are in the world).
+1. Open `mbed_app.json` - this file contains the configuration for the application, and holds the authentication keys.
+1. If you have a SX1272 or SX1276 *shield* (so not if you have a module), set your radio type under `lora-radio`.
+1. Under `lora.device-eui` enter the device EUI from the TTN console.
+1. Under `lora.application-eui` enter the application EUI from the TTN console.
+1. Under `lora.application-key` enter the application key from the TTN console.
 
-Open ``LMiC/lmic.h``, and find the following lines:
+    <span class="images">![Putting the LoRaWAN authentication keys in mbed_app.json](assets/ttn15.png)<span>Correct keys set in `mbed_app.json`</span></span>
 
-```cpp
-// mbed compiler options
-//#define CFG_eu868                                   1
-#define CFG_us915                                   1
-```
+### Sending the value of the PIR sensor
 
-Make sure the correct line is uncommented, depending on the shield version that you have.
+To send the current value of the PIR sensor (whether it sees movement), in the Online Compiler:
 
-__If you have the SX1276MB1LAS:__
+1. Open `main.cpp`.
+1. Replace the function `send_message()` with:
 
-```cpp
-//#define CFG_eu868                                   1
-#define CFG_us915                                   1
-```
+    ```cpp
+    static void send_message() {
+        static InterruptIn pir(D5); // If you hooked the sensor up to a different pin, change it here
 
-__If you have the SX1276MB1MAS:__
+        // create a one-byte payload which contains whether the PIR sensor is *high* or *low*
+        uint8_t buffer[] = { pir.read() };
+        int16_t retcode = lorawan.send(LORAWAN_APP_PORT, buffer, sizeof(buffer), MSG_CONFIRMED_FLAG);
 
-```cpp
-#define CFG_eu868                                   1
-//#define CFG_us915                                   1
-```
-
-#### Adding LORIOT keys
-
-Program the keys from LORIOT into the device firmware.
-
-<span class="images">![Copying the address and the keys from LORIOT into the device firmware](assets/lora17.png)<span>Copying the address and the keys from LORIOT into the device firmware</span></span>
-
-Open `main.cpp`, and change the following lines:
-
-```cpp
-#define LORAWAN_DEV_ADDR                            ( uint32_t )0x12345678
-
-static uint8_t NwkSKey[] =
-{
-    0x2B, 0x7E, 0x15, 0x16, 0x28, 0xAE, 0xD2, 0xA6,
-    0xAB, 0xF7, 0x15, 0x88, 0x09, 0xCF, 0x4F, 0x3C
-};
-
-// application session key
-static uint8_t ArtSKey[] =
-{
-    0x2B, 0x7E, 0x15, 0x16, 0x28, 0xAE, 0xD2, 0xA6,
-    0xAB, 0xF7, 0x15, 0x88, 0x09, 0xCF, 0x4F, 0x3C
-};
-```
-
-* Set `LORAWAN_DEV_ADDR` to the *big endian* DevAddr from LORIOT (green), prefixed with `0x`.
-* Set `NwkSKey` and `ArtSKey` to the NWKSKEY (orange) and APPSKEY (yellow) from LORIOT, but turn them into hex numbers. For example, a LORIOT key of `5ADA30AA` should be `0x5A, 0xDA, 0x30, 0xAA` in your code.
-
-
-#### Verifying the setup
-
-Now you can verify whether the setup works by clicking the *Compile* button.
-
-<span class="images">![Compile button](assets/lora10.png)<span>Compile button</span></span>
-
-When compilation succeeds, a file is downloaded.
-
-Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you should not need a driver, but you can find drivers [here](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/printf/) just in case.
-
-Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see messages coming in to the LORIOT device page:
-
-<span class="images">![We've got data!](assets/lora11.png)<span>We've got data!</span></span>
-
-#### Switching to manual sending
-
-By default, the application sends data automatically. If you want to change this, remove these lines from `main.cpp`:
-
-```cpp
-if( txOn == true )
-{
-    //Sends frame every APP_TX_DUTYCYCLE +/- APP_TX_DUTYCYCLE_RND random time (if not duty cycle limited)
-    os_setTimedCallback( &sendFrameJob,
-                         os_getTime( ) + ms2osticks( APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND ) ),
-                         onSendFrame );
-
-    ////Sends frame as soon as possible (duty cycle limitations)
-    //onSendFrame( NULL );
-}
-```
-
-You can now add code that sends a message whenever you want it to, for example when an interrupt fires because someone moves in front of the PIR sensor:
-
-```cpp
-InterruptIn pir(D5);
-
-static void prepareTxFrame( void )
-{
-    LMIC.frame[0] = pir; // current state of the pir sensor
-#if ( LORAWAN_CONFIRMED_MSG_ON == 1 )
-    LMIC.frame[1] = LMIC.seqnoDn >> 8;
-    LMIC.frame[2] = LMIC.seqnoDn;
-    LMIC.frame[3] = LMIC.rssi >> 8;
-    LMIC.frame[4] = LMIC.rssi;
-    LMIC.frame[5] = LMIC.snr;
-#endif
-}
-
-void movement() {
-    onSendFrame(NULL);
-}
-
-void no_movement() {
-    onSendFrame(NULL);
-}
-
-int main( void ) {
-
-    pir.rise(movement);
-    pir.fall(no_movement);
-
-    // ... lora related things
-}
-```
-
-Change the content of the `prepareTxFrame` function to change which data you're sending (also update `LORAWAN_APP_DATA_SIZE`). You get a message whenever the PIR sensor changes state (from motion to no-motion and the other way around).
-
-### Using the MultiTech mDot
-
-
-#### Importing the boilerplate program into the online IDE
-
-1. [Sign up](https://developer.mbed.org/account/signup/?next=%2F) for an account on ARM mbed, which hosts the Online Compiler you'll use.
-1. Go to the [MultiTech mDot platform page](https://developer.mbed.org/platforms/MTS-mDot-F411/).
-1. Click *Add to your mbed compiler*.
-1. Go to the [mdot_personalized_activation](https://developer.mbed.org/users/janjongboom/code/mdot_personalized_activation/) project page.
-1. Click *Import this program*.
-1. You're redirected to the Online Compiler, where you can give the program a name.
-
-<span class="images">![Importing a program to get started](assets/lora12.png)<span>Importing a program to get started</span></span>
-
-<span class="notes">**Note:** Make sure that you select the correct board in the top right corner of the compiler.</span>
-
-<span class="images">![Selecting the right board](assets/lora13.png)<span>Selecting the correct board</span></span>
-
-#### Adding LORIOT keys
-
-Now, program the keys from LORIOT into the device firmware.
-
-<span class="images">![Copying the address and the keys from LORIOT into the device firmware](assets/lora17.png)<span>Copying the address and the keys from LORIOT into the device firmware</span></span>
-
-Open `main.cpp`, and copy the big endian `DevAddr` (green), the `NWKSKEY` (orange) and the `NWKSKEY` (yellow) from LORIOT into the application:
-
-```cpp
-static const char LORIOT_DEV_ADDR[]  = "AABBCCDD"; // green
-static const char LORIOT_NWK_S_KEY[] = "E8A25EBD07F85800E08478A041FACBA7"; // orange
-static const char LORIOT_APP_S_KEY[] = "BE8EF84E745D0AB14D4507B0BA600555"; // yellow
-```
-
-#### Verifying the setup
-
-Now you can verify whether the setup works by clicking the *Compile* button.
-
-<span class="images">![Compile button](assets/lora10.png)<span>Compile button</span></span>
-
-When compilation succeeds, a file is downloaded.
-
-Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you don't need a driver, but you can find drivers [here](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/printf/) just in case.
-
-Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see messages coming in to the LORIOT device page:
-
-<span class="images">![We've got data!](assets/lora11.png)<span>We've got data!</span></span>
-
-#### Switching to manual sending
-
-By default, the application sends data automatically. If you want to change this, remove the `send_data();` call, and call it manually (for example from an interrupt). See the [section above about the LoRa shield](#using-the-lora-shield) for more information.
-
-## Building a web application
-
-Now that the first three parts of the network are working, it's time to use the sensor data in a small application. LORIOT offers ways to get your data out of its service, but the easiest is using a websocket. You can write a web application that turns the page red when movement is detected and green when everything is OK. You do this by checking the first byte of the LoRa payload (1=movement, 0=no movement).
-
-1. In LORIOT: go to your dashboard, and click *Applications > Sample App > Output*.
-1. Change the output type to *WebSocket*.
-
-	<span class="images">![Websocket](assets/lora14.png)<span>Websocket</span></span>
-
-1. Copy the URL and the token under *Current output setup*, and paste them in the code sample below:
-
-	<span class="images">![Retrieving the API parameters from the output tab in LORIOT](assets/lora16.png)<span>Retrieving the API parameters from the output tab in LORIOT</span></span>
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>PIR Sensor monitoring!</title>
-</head>
-<body>
-    <p id="status">Connecting...</p>
-    <script>
-    var token = 'YOUR_AUTHENTICATION_TOKEN_HERE';
-    var url = 'YOUR_TARGET_URL_HERE (incl {token} part)';
-    var ws = new WebSocket(url.replace('{token}', token));
-    ws.onopen = function() {
-        document.querySelector('#status').textContent = 'Connected';
-    };
-    ws.onclose = function() {
-        document.querySelector('#status').textContent = 'Disconnected';
-    };
-    ws.onmessage = function(e) {
-        console.log('onmessage', e);
-        var data = JSON.parse(e.data);
-        if (data.cmd !== 'rx') return;
-
-        switch (Number(data.data.slice(0, 2))) {
-            case 0: document.body.style.backgroundColor = 'green'; break;
-            case 1: document.body.style.backgroundColor = 'red'; break;
+        if (retcode == 0) {
+            printf("Sent message over LoRaWAN successfully!\n");
         }
-    };
-    </script>
-</body>
-</html>
+        else {
+            printf("Failed to send message (duty-cycle violation?) (%d)\n", retcode);
+        }
+    }
+    ```
+
+### Verifying the setup
+
+Now you can verify whether the setup works by flashing this application to your board.
+
+1. In the Online Compiler click the *Compile* button.
+
+    <span class="images">![Compile button](assets/lora10.png)<span>Compile button</span></span>
+
+1. When compilation succeeds, a file is downloaded.
+1. Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you should not need a driver, but you can find drivers [here](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/printf/) just in case.
+1. Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see the device joining, and then sending messages in the The Things Network console, under the *Data* tab:
+
+    <span class="images">![We've got data!](assets/lora11.png)<span>We've got data! **TODO: replace this image*</span></span>
+
+<span class="notes">**Note 1:** You can hook a [serial monitor](https://os.mbed.com/handbook/SerialPC) up to the development board (baud rate 115,200) to see debugging messages.</span>
+
+<span class="notes">**Note 2:** No data in the *Data* tab? Verify that the gateway can receive messages. In the TTN console go to your gateway, and see if you see any data come through under the *Traffic* tab. If you see your device there, but not under the device page the keys are probably wrong.</span>
+
+#### Sending manually
+
+By default, the application sends data automatically. If you want to change this, remove this line from `main.cpp`:
+
+```cpp
+ev_queue.call_every(TX_TIMER, send_message);
 ```
 
-You now have a fully functioning LoRa network with a device, a gateway and a web application:
+And call `send_message` whenever you want (for example after the state of the sensor changes). Note that you still need to adhere to the duty cycle, so you cannot send too fast.
 
-<span class="images">![Full circle](assets/lora15.png)<span>Full circle</span></span>
 
-## Conclusion
+### Relaying data back to the device
 
-LoRa is a great technology with a lot of potential, especially because anyone can set up a network and start building long-range IoT devices with a relatively small investment. We hope this guide helped you get started, and we would love to see what you build with LoRa and ARM mbed!
+You can also send data back to the device. Because LoRaWAN (in Class-A mode, which you're using here) is not continiously connected to the network you'll need to wait for a receive (RX) window to occur to receive data. An RX window opens right after a transmission. So you need to *send* to the network first before you can receive a message. If you send a message from The Things Network back to your device the network will automatically queue the message and deliver it in the next RX window.
+
+We can toggle the LED on your development board over LoRa. In the Online Compiler:
+
+1. Open `main.cpp`.
+1. Replace the `receive_message` function with:
+
+    ```cpp
+    static void receive_message() {
+        static DigitalOut led(LED1, 0); // the LED under control, default value of 0
+
+        int16_t retcode = lorawan.receive(LORAWAN_APP_PORT, rx_buffer,
+                                LORAMAC_PHY_MAXPAYLOAD,
+                                MSG_CONFIRMED_FLAG|MSG_UNCONFIRMED_FLAG);
+
+        // ignore errors while retrieving
+        if (retcode < 0) return;
+
+        led = rx_buffer[0]; // set the value of the LED depending on the first byte in the message
+
+        printf("Received %d bytes: ", retcode);
+        for (uint8_t i = 0; i < retcode; i++) {
+            printf("%x", rx_buffer[i]);
+        }
+        printf("\n");
+    }
+    ```
+
+    <span class="notes">**Note:** On some development boards writing `0` to the LED will turn them on, on some others writing `1` will do this. It depends on the wiring of the board.</span>
+
+1. Compile and flash the application.
+1. When the device is back online, use the The Things Network console to queue a message.
+1. Go to your device page, and under *Downlink*, select port *21*, and data `01`.
+
+    <span class="images">![Queuing a downlink message using the TTN console](assets/ttn16.png)<span>Queuing a downlink message over port 21</span></span>
+
+1. After the next transmission the LED should toggle and a message should appear on serial console. Try the same thing now with sending `0`.
+
+## Getting your data out of the The Things Network
+
+The system works and sends data in two directions, but the data is not stored anywhere. Let's change that. The Things Network offers a data API to get the data out of the network. You can then store it on your own servers or forward it to a cloud service.
+
+For this tutorial we built a small web application which listens for events from the movement sensors, and shows an overview of all sensors. To use this application you'll need a recent version of [Node.js](https://nodejs.org) installed on your computer.
+
+<span class="images">![Application which shows movement information, built using Mbed OS and The Things Network](assets/lora19.png)<span>Demo application</span></span>
+
+
+
+Let's build this application. First we need to grab an access key from The Things Network.
+
+1. Go to your application in the TTN console.
+1. Locate your *Application ID* and note it down.
+
+    <span class="images">![TTN Application ID](assets/ttn17.png)</span>
+
+1. Locate your *Access Key*, click the 'show' button and note it down as well.
+
+    <span class="images">![TTN Access Key](assets/ttn18.png)</span>
+
+Now clone the demo application and run it.
+
+1. [Download the demo application](https://github.com/ARMmbed/lora-docs/archive/master.zip) and extract it.
+1. In the unzipped application locate `ttn-node-app/server.js` and paste your Application ID and Access Key on lines 1 and 2.
+1. Open a terminal - or command prompt - and navigate to the folder where you unzipped the application.
+1. Run:
+
+    ```
+    $ cd ttn-node-app
+    $ npm install
+    $ node server.js
+    ```
+
+   This should show:
+
+    ```
+    Connecting to the The Things Network data channel...
+    Connected to The Things Network data channel
+    Retrieving devices...
+    Retrieved devices (2)
+    Web server listening on port 5270!
+    ```
+
+1. Now open a web browser and navigate to http://localhost:5270 to see the application running!
+
+## Recap
+
+LoRa / LoRaWAN is a great technology with a lot of potential, especially because anyone can set up a network and start building long-range IoT devices with a relatively small investment. We hope this guide helped you get started, and we would love to see what you build with LoRa and Mbed!
+
+### More material
+
+* [Webinar: getting started with LoRa using Arm Mbed and The Things Network](https://pages.arm.com/2017-10-29-webinar-registration.html).
+* [Mbed OS LoRaWAN stack documentation]().
+* [Firmware updates over LoRaWAN](https://os.mbed.com/blog/entry/firmware-updates-over-lpwan-lora/).
+* [Presentations from The Things Conference](https://www.youtube.com/playlist?list=PLM8eOeiKY7JUhIyxWWU2-qziejDbBg-pf).
