@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LoRaWAN intruder detection</title>
+  <link rel="stylesheet" href="/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+
+<body>
+  <div id="header">
+    <a href="/"><img id="logo" src="/ARMmbedLogo.svg"></a>
+  </div>
+
+  <h1>Movement sensors</h1>
+
+  <ul id="sensors">
+    {{#devices}}
+      <li data-id="{{devId}}">
+        <h2>{{devId}}</h2>
+        <p><label>State:</label> <span class="state">{{state}}</span></p>
+        <p><label>Last seen:</label> <span class="last_seen">{{last_seen}}</span></p>
+      </li>
+    {{/devices}}
+  </ul>
+
+  <div id="notification" style="opacity: 0; visibility: hidden;"></div>
+
+  <script src="/helper.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    // Here is how we connect back to the server
+    var socket = io.connect(location.origin);
+
+    // Movement detected! This is an event sent by the server...
+    socket.on('movement-change', function(device, state) {
+      if (state === 1) {
+        // At the bottom of the page show a notification :-)
+        showNotification('Movement detected at ' + device);
+      }
+
+      var el = document.querySelector('li[data-id="' + device + '"]');
+      if (!el) return;
+
+      el.querySelector('.state').textContent = state;
+      el.querySelector('.last_seen').textContent = new Date().toLocaleString();
+    });
+
+  </script>
+
+</body>
+</html>

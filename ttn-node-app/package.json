@@ -1,0 +1,32 @@
+{
+  "name": "mbed-ttn-node-app",
+  "version": "1.0.0",
+  "description": "Simple web application showing data from The Things Network",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armmbed/lora-docs.git"
+  },
+  "keywords": [
+    "lora",
+    "ttn",
+    "the things network",
+    "mbed",
+    "lorawan"
+  ],
+  "author": "Jan Jongboom <jan.jongboom@arm.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/armmbed/lora-docs/issues"
+  },
+  "homepage": "https://github.com/armmbed/lora-docs#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "hbs": "^4.0.1",
+    "socket.io": "^2.0.4",
+    "ttn": "^2.3.1"
+  }
+}
