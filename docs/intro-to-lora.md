@@ -51,13 +51,13 @@ You also need to build devices. If you use Mbed OS (and you should), you can eit
 
 * A development board with a LoRa transceiver:
     * [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/).
-    * [Multi-Tech xDot](https://developer.mbed.org/platforms/MTS-xDot-L151CC/).
-    * [Multi-Tech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [UDK2 board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
-    * [Multi-Tech mDot EVB](https://developer.mbed.org/platforms/mdotevb/).
+    * [Multi-Tech xDot](https://os.mbed.com/platforms/MTS-xDot-L151CC/).
+    * [Multi-Tech mDot](https://os.mbed.com/platforms/MTS-mDot-F411/) and the [UDK2 board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
+    * [Multi-Tech mDot EVB](https://os.mbed.com/platforms/mdotevb/).
     * [B-L072Z-LRWAN1 LoRa®Discovery kit](https://os.mbed.com/platforms/ST-Discovery-LRWAN1/).
 * An Mbed OS 5-enabled development board together with a LoRa shield:
-    * [SX1272MB2xAS](https://developer.mbed.org/components/SX1272MB2xAS/) - shield based on the SX1272 transceiver.
-    * [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) - shield based on the SX1276 transceiver.
+    * [SX1272MB2xAS](https://os.mbed.com/components/SX1272MB2xAS/) - shield based on the SX1272 transceiver.
+    * [SX1276MB1xAS](https://os.mbed.com/components/SX1276MB1xAS/) - shield based on the SX1276 transceiver.
 
 This tutorial applies to all combinations listed above.
 
@@ -273,7 +273,7 @@ Now that the device is registered in The Things Network we can start writing som
 Mbed comes with an Online Compiler which you can use to build applications, without needing to install anything on your computer (although we do have [offline tools]()).
 
 1. [Sign up](https://os.mbed.com/account/signup/?next=%2F) for an account on Arm Mbed, which hosts the Online Compiler you'll be using.
-1. Find your development board on [the Platforms page](https://developer.mbed.org/platforms/).
+1. Find your development board on [the Platforms page](https://os.mbed.com/platforms/).
 1. Click *Add to your mbed compiler*.
 1. Go to [mbed-os-example-lorawan]().
 1. Click *Import this program*.
