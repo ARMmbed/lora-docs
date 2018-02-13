@@ -383,8 +383,7 @@ We can toggle the LED on your development board over LoRa. In the Online Compile
     <span class="notes">**Note:** On some development boards writing `0` to the LED will turn them on, on some others writing `1` will do this. It depends on the wiring of the board.</span>
 
 1. Compile and flash the application.
-1. When the device is back online, use the The Things Network console to queue a message.
-1. Go to your device page, and under *Downlink*, select port *21*, and data `01`.
+1. When the device is back online, use the The Things Network console to queue a message. Go to your device page, and under *Downlink*, select port *21*, and data `01`. Then press *Send*.
 
     <span class="images">![Queuing a downlink message using the TTN console](assets/ttn16.png)<span>Queuing a downlink message over port 21</span></span>
 
