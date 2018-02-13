@@ -279,7 +279,7 @@ Mbed comes with an Online Compiler which you can use to build applications, with
 1. Click *Import this program*.
 1. You're redirected to the Online Compiler, where you can give the program a name.
 
-	<span class="images">![Importing a program to get started](assets/lora7.png)<span>Importing a program to get started</span></span>
+    <span class="images">![Importing a program to get started](assets/lora7.png)<span>Importing a program to get started</span></span>
 
 <span class="notes">**Note:** Make sure that you select the correct board in the top right corner of the compiler.</span>
 
@@ -364,8 +364,8 @@ We can toggle the LED on your development board over LoRa. In the Online Compile
         static DigitalOut led(LED1, 0); // the LED under control, default value of 0
 
         int16_t retcode = lorawan.receive(LORAWAN_APP_PORT, rx_buffer,
-                                LORAMAC_PHY_MAXPAYLOAD,
-                                MSG_CONFIRMED_FLAG|MSG_UNCONFIRMED_FLAG);
+                                          LORAMAC_PHY_MAXPAYLOAD,
+                                          MSG_CONFIRMED_FLAG|MSG_UNCONFIRMED_FLAG);
 
         // ignore errors while retrieving
         if (retcode < 0) return;
