@@ -333,7 +333,7 @@ Now you can verify whether the setup works by flashing this application to your 
 1. Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you should not need a driver, but you can find drivers [here](https://docs.mbed.com/docs/debugging-on-mbed/en/latest/Debugging/printf/) just in case.
 1. Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see the device joining, and then sending messages in the The Things Network console, under the *Data* tab:
 
-    <span class="images">![We've got data!](assets/lora11.png)<span>We've got data! **TODO: replace this image*</span></span>
+    <span class="images"><span>We've got data! **TODO: add image**</span></span>
 
 <span class="notes">**Note 1:** You can hook a [serial monitor](https://os.mbed.com/handbook/SerialPC) up to the development board (baud rate 115,200) to see debugging messages.</span>
 
