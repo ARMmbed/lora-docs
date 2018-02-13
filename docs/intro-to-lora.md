@@ -27,7 +27,7 @@ And we need software:
 * A network service.
 * An app.
 
-This guide shows you which hardware you can buy and two online services you can use to write device firmware and handle your LoRa traffic.
+This guide shows you which hardware you can buy, how to configure a gateway, how to write some device firmware, and how to set up a web application to show your LoRa traffic.
 
 Note that the frequency that LoRa uses differs per region. Make sure you get gateways and devices that are legal in your jurisdiction. For example, use 915 MHz radios in the United States, and an 868 MHz radio in Europe. More information can be found in the [LoRaWAN regional parameters](http://net868.ru/assets/pdf/LoRaWAN-Regional-Parameters-v1.1rA.PDF) specification.
 
