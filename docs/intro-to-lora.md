@@ -59,7 +59,7 @@ You also need to build devices. If you use Mbed OS (and you should), you can eit
     * [SX1272MB2xAS](https://developer.mbed.org/components/SX1272MB2xAS/) - shield based on the SX1272 transceiver.
     * [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) - shield based on the SX1276 transceiver.
 
-This document contains instructions for the Multi-Tech mDot and the [Nordic Semiconductors nRF51-DK](https://developer.mbed.org/platforms/Nordic-nRF51-DK/)+SX1276MB1xAS shield, but the same principles apply to all other combinations.
+This tutorial applies to all combinations listed above.
 
 <span class="notes">**Note:** When ordering hardware, always make sure you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).</span>
 
