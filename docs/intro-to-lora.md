@@ -218,7 +218,7 @@ Now to the interesting work: building a device that can send sensor data over th
 
 #### Sending data constantly
 
-You cannot send data constantly because of duty cycle limitations. This is a requirement of using the open spectrum. If you send too quickly, sending will fail. How fast you are allowed to send depends on the spread factor that you use. With a higher spread factor, it takes longer to send a message - though the chance that it will be received by a gateway increases. Thus, you need to wait longer before you can send again. During development, you can set the spread factor to SF7 (the lowest), so you can send every 6-7 seconds.
+You cannot send data constantly because of spectrum regulations. The spectrum that LoRa uses is unlicensed, but that does not mean that it's unregulated. For example, in Europe there are duty cycle limitations of 1% - you can only send 1% of the time. In the US there's dwell time, which requires you to wait at least 400 ms. between transmissions. If you do something that would violate these regulations, sending will fail. How fast you are allowed to send depends on the spread factor that you use. With a higher spread factor, it takes longer to send a message - though the chance that it will be received by a gateway increases. Thus, you need to wait longer before you can send again. During development, you can set the spread factor to SF7 (the lowest), so you can send every 6-7 seconds.
 
 LoRaWAN has a feature called Adaptive Data Rating (ADR), through which the network can control the spread factor. You probably want this enabled.
 
