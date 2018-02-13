@@ -270,7 +270,7 @@ Now that the device is registered in The Things Network we can start writing som
 
 ## Importing the demo application
 
-Mbed comes with an Online Compiler which you can use to build applications, without needing to install anything on your computer (although we do have [offline tools]()).
+Mbed comes with an Online Compiler which you can use to build applications, without needing to install anything on your computer (although we do have [offline tools](https://os.mbed.com/docs/latest/tools/index.html)).
 
 1. [Sign up](https://os.mbed.com/account/signup/?next=%2F) for an account on Arm Mbed, which hosts the Online Compiler you'll be using.
 1. Find your development board on [the Platforms page](https://os.mbed.com/platforms/).
@@ -335,7 +335,7 @@ Now you can verify whether the setup works by flashing this application to your 
 
     <span class="images"><span>We've got data! **TODO: add image**</span></span>
 
-<span class="notes">**Note 1:** You can hook a [serial monitor](https://os.mbed.com/docs/v5.6/tutorials/serial-comm.html) up to the development board (baud rate 115,200) to see debugging messages.</span>
+<span class="notes">**Note 1:** You can hook a [serial monitor](https://os.mbed.com/docs/latest/tutorials/serial-comm.html) up to the development board (baud rate 115,200) to see debugging messages.</span>
 
 <span class="notes">**Note 2:** No data in the *Data* tab? Verify that the gateway can receive messages. In the TTN console go to your gateway, and see if you see any data come through under the *Traffic* tab. If you see your device there, but not under the device page the keys are probably wrong.</span>
 
