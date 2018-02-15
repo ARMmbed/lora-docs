@@ -4,7 +4,7 @@ There is a lot of buzz about [LoRa](https://www.lora-alliance.org), a wide-area 
 
 <span class="notes">**Note on LoRa vs. LoRaWAN:** Technically, we're building a LoRaWAN network in this article. LoRa is the modulation technique used (PHY), and LoRaWAN is the network protocol on top of the physical layer (MAC).</span>
 
-## Requirements
+## 1. Requirements
 
 A typical LoRa network consists of four parts: devices, gateways, a network service and an application:
 
@@ -31,7 +31,7 @@ This guide shows you which hardware you can buy, how to configure a gateway, how
 
 Note that the frequency that LoRa uses differs per region. Make sure you get gateways and devices that are legal in your jurisdiction. For example, use 915 MHz radios in the United States, and an 868 MHz radio in Europe. More information can be found in the [LoRaWAN regional parameters](http://net868.ru/assets/pdf/LoRaWAN-Regional-Parameters-v1.1rA.PDF) specification.
 
-### Getting a gateway
+### 1.1 - Getting a gateway
 
 You have [a lot of choices in the gateways](https://www.loriot.io/lora-gateways.html) you can use, but we've had good experience with these three:
 
@@ -45,7 +45,7 @@ For development purposes, one gateway is enough, but in a production deployment,
 
 <span class="images">![Kerlink Wirnet station mounted in Oslo](assets/lora18.jpg)<span>Kerlink Wirnet station overlooking the Oslo fjord.</span></span>
 
-### Getting a device
+### 1.2 - Getting a device
 
 You also need to build devices. If you use Mbed OS (and you should), you can either use:
 
@@ -63,28 +63,23 @@ This tutorial applies to all combinations listed above.
 
 <span class="notes">**Note:** When ordering hardware, always make sure you get the variant that works in your region (for example 868 MHz in Europe, 915 MHz in the US).</span>
 
-### Network server
+### 1.3 - Network server
 
 Now on to the software side. You need a server that understands the LoRa protocol and can interpret the data the device sends. It's possible to roll your own (Semtech can give you its reference implementation if you sign an NDA), but there are also companies building LoRa network servers as a service, handling everything on your behalf. This article uses [The Things Network](https://www.thethingsnetwork.org), an open source, globally distributed network service that also has a free hosted community edition.
 
 Because a network server only processes your data and doesn't store it, you need a place to store your messages, as well. The Things Network allows you to hook into their service through an MQTT client and forward your data to the cloud service of your choice (or straight to your application).
 
-## Setting up the gateway
+## 2. Setting up the gateway
 
-You now need to configure the gateway by installing software that scans the spectrum and forwards all LoRa packets to the network server. To do this, you will need to log into the gateway. Below are setup instructions for the three gateways suggested earlier.
+You now need to configure the gateway by installing software that scans the spectrum and forwards all LoRa packets to the network server. Below are setup instructions for the three gateways suggested earlier.
 
-<span class="notes">**Note:** This section assumes that you're familiar with SSH.</span>
+### 2.1 - Prerequisites
 
-### Kerlink IoT station
+#### Kerlink Wirnet stations
 
-To configure the Kerlink:
+Follow the instructions in [this document](https://www.thethingsnetwork.org/docs/gateways/kerlink/config.html).
 
-1. Connect the gateway to your network over Ethernet.
-1. The gateway gets an IP through DHCP.
-1. To quickly find the gateway, look in the DHCP table on your router or use [nmap](http://nmap.org) via `nmap -p 22 192.168.2.*` (if that's your subnet).
-1. You can now log into the gateway through SSH with the username `root` and password `root` (if using 2.x firmware) or `pdmk-0` followed by the last seven numbers of the gateway's serial number (if using 3.x firmware).
-
-### MultiTech Conduit
+#### Multi-Tech Conduit
 
 The Conduit is configured with DHCP disabled, so you need to enable this first. There are two options to do this: either via Ethernet or via micro-USB.
 
@@ -110,30 +105,13 @@ Now that you are connected, you can set up the gateway:
 1. Connect the gateway over Ethernet to your router.
 1. Verify that the gateway is connected to the internet (for example, by running `ping 8.8.4.4`).
 
-### Raspberry Pi and IMST iC880A
+#### Raspberry Pi
 
-First, make sure that the Raspberry Pi is connected to the internet and that you connected the IMST iC880A over USB. (If you have the SPI version, look at the [IMST website](http://www.wireless-solutions.de/products/radiomodules/ic880a)).
+Follow the instructions in [this document](https://github.com/ttn-zh/ic880a-gateway/wiki).
 
-Log into the Pi over SSH, and follow Steps 3.1 - 3.5 in [this document](http://www.wireless-solutions.de/images/stories/downloads/Radio%20Modules/iC880A/iC880A_QuickStartGuide.pdf).
+### 2.2 - Registering the gateway
 
-<span class="notes">**Note:** Use [lora_gateway 2.0.0](https://github.com/Lora-net/lora_gateway/releases/tag/v2.0.0), not the latest version. (Run `git checkout v2.0.0` in the lora_gateway folder).</span>
-
-After following these steps:
-
-1. Restart the Pi.
-1. Run:
-
-    ``~/LoRa/lora_gateway/lora_gateway/util_pkt_logger/util_pkt_logger``
-
-1. You see 'INFO: concentrator started, packet can now be received', which indicates that everything is functioning.
-
-## Installing the packet forwarder
-
-Now that you have set up the gateways and they can reach the internet, it's time to install the The Things Network software on them, so they have a place to send the LoRa packets. This software is called a 'packet forwarder' - as it captures LoRa packets and forwards them.
-
-### Registering the gateway
-
-1. [Sign up](https://console.thethingsnetwork.org) for an account.
+1. [Sign up](https://console.thethingsnetwork.org) for an account at The Things Network.
 1. You're redirected to the dashboard page.
 1. Click *Gateways*.
 
@@ -147,20 +125,30 @@ Now that you have set up the gateways and they can reach the internet, it's time
 
     <span class="images">![Gateway details](assets/ttn3.png)<span>Gateway details, make sure the location is set correctly so coverage maps can be updated.</span></span>
 
+1. If you use the Kerlink Wirnet station:
+    * Tick *I'm using the legacy packet forwarder*.
+    * Under 'Gateway EUI' enter the EUI of the gateway (printed on the box).
+
+1. If you use the Raspberry Pi:
+    * Tick *I'm using the legacy packet forwarder*.
+    * Under 'Gateway EUI' enter the EUI that was printed when calling `install.sh` in step 2.1.
+
 1. Click *Register gateway*.
-1. The gateway is now created, to authenticate the gateway you need the 'Gateway key'. Copy it.
+1. The gateway is now created.
 
-    <span class="images">![Gateway key is required for authentication to the network](assets/ttn4.png)</span>
+If you use the Multi-Tech Conduit, you need the 'Gateway key' to authenticate the gateway to the network. Copy it.
 
-### Installing the packet forwarder
+<span class="images">![Gateway key is required for authentication to the network](assets/ttn4.png)</span>
 
-**Kerlink IoT station**
+### 2.3 - Installing the packet forwarder
 
-<span class="notes">**Note on the Kerlink IoT station:** Often, the Kerlink IoT station comes preconfigured with the packet forwarder (run `ps | grep pkt` to see if one is running). If this is the case, make sure the packet forwarder does not start on startup by removing the entry from `/etc/init.d`.</span>
+#### Kerlink Wirnet station / Raspberry Pi
 
-??
+No further action required. The gateway should show as 'Connected' in the TTN console.
 
-**Multi-Tech Conduit**
+<span class="images">![Connected!](assets/ttn7.png)<span>Connected!</span></span>
+
+#### Multi-Tech Conduit
 
 1. On the gateway run:
 
@@ -188,33 +176,13 @@ Now that you have set up the gateways and they can reach the internet, it's time
 
     <span class="images">![Connected!](assets/ttn7.png)<span>Connected!</span></span>
 
-**Raspberry Pi + IMST iC880A**
-
-???
-
-<span class="tips">**Tip:** TTN has a 'Traffic' tab, which you can access from your gateway page. This allows you to see what messages the gateway is picking up, which is useful when debugging.</span>
-
-### Automatically starting the packet forwarder binary when the gateway starts
-
-#### Kerlink IoT station
-
-???
-
-#### MultiTech Conduit
-
-???
-
-#### Raspberry Pi and IMST iC880A
-
-Follow the steps on [this page](http://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up) to start the packet forwarder when the Raspberry Pi starts up.
-
-## Building a device
+## 3. Building a device
 
 Now to the interesting work: building a device that can send sensor data over the LoRa network. For example, you can create a motion sensor using a [PIR sensor](https://www.adafruit.com/products/189) (less than 10 euros at your local hardware store and 2 euros when ordering from China). Of course, you can use any other sensor.
 
 <span class="images">![nRF51-DK, LoRa shield and a PIR sensor](assets/lora6.jpg)<span>PIR sensor hooked up to a Nordic Semiconductor nRF51-DK with a SX1276 LoRa shield</span></span>
 
-### Some notes on writing firmware
+### 3.1 - Some notes on writing firmware
 
 #### Sending data constantly
 
@@ -226,7 +194,7 @@ LoRaWAN has a feature called Adaptive Data Rating (ADR), through which the netwo
 
 A disadvantage of the SX1272 and SX1276 LoRa shields is that they block a lot of pins. You can solder some new headers on the back of the shield to add new peripherals, or use a microcontroller like the nRF51-DK or a NUCLEO board that has more pins available than just the Arduino headers.
 
-## Registering the device on The Things Network
+### 3.2 - Registering the device on The Things Network
 
 LoRaWAN uses an end-to-end encryption scheme that uses two session keys. One key is held by the network server, and another one is held by the application server (in this tutorial TTN fulfills both roles). These session keys are created when the device joins the network. For the initial authentication with the network the application needs its device EUI, the application EUI of the application it wants to join, and a pre-shared key (the application key).
 
@@ -268,7 +236,7 @@ Let's register the device in The Things Network and generate some keys:
 
 Now that the device is registered in The Things Network we can start writing some code!
 
-## Importing the demo application
+### 3.3 - Importing the demo application
 
 Mbed comes with an Online Compiler which you can use to build applications, without needing to install anything on your computer (although we do have [offline tools](https://os.mbed.com/docs/latest/tools/index.html)).
 
@@ -285,7 +253,7 @@ Mbed comes with an Online Compiler which you can use to build applications, with
 
 <span class="images">![Selecting the right board](assets/lora8.png)<span>Selecting the correct board</span></span>
 
-### Setting keys
+### 3.4 - Setting keys
 
 In the Online Compiler:
 
@@ -297,7 +265,7 @@ In the Online Compiler:
 
     <span class="images">![Putting the LoRaWAN authentication keys in mbed_app.json](assets/ttn15.png)<span>Correct keys set in `mbed_app.json`</span></span>
 
-### Sending the value of the PIR sensor
+#### Sending the value of the PIR sensor
 
 To send the current value of the PIR sensor (whether it sees movement), in the Online Compiler:
 
@@ -321,7 +289,7 @@ To send the current value of the PIR sensor (whether it sees movement), in the O
     }
     ```
 
-### Verifying the setup
+### 3.5 - Verifying the setup
 
 Now you can verify whether the setup works by flashing this application to your board.
 
@@ -350,7 +318,7 @@ ev_queue.call_every(TX_TIMER, send_message);
 And call `send_message` whenever you want (for example after the state of the sensor changes). Note that you still need to adhere to the duty cycle, so you cannot send too fast.
 
 
-### Relaying data back to the device
+### 3.6 - Relaying data back to the device
 
 You can also send data back to the device. Because LoRaWAN (in Class-A mode, which you're using here) is not continiously connected to the network you'll need to wait for a receive (RX) window to occur to receive data. An RX window opens right after a transmission. So you need to *send* to the network first before you can receive a message. If you send a message from The Things Network back to your device the network will automatically queue the message and deliver it in the next RX window.
 
@@ -389,15 +357,13 @@ We can toggle the LED on your development board over LoRa. In the Online Compile
 
 1. After the next transmission the LED should toggle and a message should appear on serial console. Try the same thing now with sending `0`.
 
-## Getting your data out of the The Things Network
+## 4. Getting your data out of the The Things Network
 
 The system works and sends data in two directions, but the data is not stored anywhere. Let's change that. The Things Network offers a data API to get the data out of the network. You can then store it on your own servers or forward it to a cloud service.
 
 For this tutorial we built a small web application which listens for events from the movement sensors, and shows an overview of all sensors. To use this application you'll need a recent version of [Node.js](https://nodejs.org) installed on your computer.
 
 <span class="images">![Application which shows movement information, built using Mbed OS and The Things Network](assets/lora19.png)<span>Demo application</span></span>
-
-
 
 Let's build this application. First we need to grab an access key from The Things Network.
 
@@ -435,7 +401,7 @@ Now clone the demo application and run it.
 
 1. Now open a web browser and navigate to http://localhost:5270 to see the application running!
 
-## Recap
+## 5. Recap
 
 LoRa / LoRaWAN is a great technology with a lot of potential, especially because anyone can set up a network and start building long-range IoT devices with a relatively small investment. We hope this guide helped you get started, and we would love to see what you build with LoRa and Mbed!
 
