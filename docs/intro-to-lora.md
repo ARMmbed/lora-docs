@@ -1,10 +1,10 @@
 # Building your own private LoRa network
 
-There is a lot of buzz about [LoRa](https://www.lora-alliance.org), a wide-area network solution that promises kilometers of range with very low power consumption, a perfect fit for the Internet of Things. Telecom operators are rolling out LoRa networks, but because LoRa operates in the [open spectrum](https://en.wikipedia.org/wiki/ISM_band), you can also set up your own network. This article discusses the requirements to build a private LoRa network and how to use the network to send data from an Arm Mbed end-node to the cloud.
+There is a lot of buzz about [LoRa](https://www.lora-alliance.org), a wide-area network solution that promises kilometers of range with very low power consumption, a perfect fit for the Internet of Things. Telecom operators are rolling out LoRa networks, but because LoRa operates in the [open spectrum](https://en.wikipedia.org/wiki/ISM_band), you can also set up your own network. This article discusses what you need in order to build a private LoRa network and how to use the network to send data from an Arm Mbed end-node to the cloud.
 
 <span class="notes">**Note on LoRa vs. LoRaWAN:** Technically, we're building a LoRaWAN network in this article. LoRa is the modulation technique used (PHY), and LoRaWAN is the network protocol on top of the physical layer (MAC).</span>
 
-## 1. Requirements
+## 1. What you need
 
 A typical LoRa network consists of four parts: devices, gateways, a network service and an application:
 
@@ -14,24 +14,27 @@ For hardware, you need devices and gateways, similar to how you would set up a W
 
 The network service deduplicates packets when multiple gateways receive the same packet, decrypts the message (everything is end-to-end encrypted), handles LoRa features such as adaptive data rating and so on. It then forwards the decrypted data to your application. Often, network service providers allow you to run parts of the network - like the application server, which decrypts the messages - yourself.
 
-There are five requirements.
-
-We need hardware:
+You will need hardware:
 
 * Gateways.
 * Devices.
 
-And we need software:
+And some software:
 
 * Device firmware.
 * A network service.
 * An app.
 
-This guide shows you which hardware you can buy, how to configure a gateway, how to write some device firmware, and how to set up a web application to show your LoRa traffic.
+This guide shows you:
 
-Note that the frequency that LoRa uses differs per region. Make sure you get gateways and devices that are legal in your jurisdiction. For example, use 915 MHz radios in the United States, and an 868 MHz radio in Europe. More information can be found in the [LoRaWAN regional parameters](http://net868.ru/assets/pdf/LoRaWAN-Regional-Parameters-v1.1rA.PDF) specification.
+* Which hardware you can buy.
+* How to configure a gateway.
+* How to write some device firmware. 
+* How to set up a web application to show your LoRa traffic.
 
-### 1.1 - Getting a gateway
+<span class="notes">**Note:** The frequency that LoRa uses differs between region. Make sure you get gateways and devices that are legal in your jurisdiction. For example, use 915 MHz radios in the United States, and an 868 MHz radio in Europe. More information can be found in the [LoRaWAN regional parameters](http://net868.ru/assets/pdf/LoRaWAN-Regional-Parameters-v1.1rA.PDF) specification.</span>
+
+### 1.1 - Choosing a gateway
 
 You have [a lot of choices in the gateways](https://www.loriot.io/lora-gateways.html) you can use, but we've had good experience with these three:
 
@@ -45,7 +48,7 @@ For development purposes, one gateway is enough, but in a production deployment,
 
 <span class="images">![Kerlink Wirnet station mounted in Oslo](assets/lora18.jpg)<span>Kerlink Wirnet station overlooking the Oslo fjord.</span></span>
 
-### 1.2 - Getting a device
+### 1.2 - Choosing a device
 
 You also need to build devices. If you use Mbed OS (and you should), you can either use:
 
@@ -67,11 +70,11 @@ This tutorial applies to all combinations listed above.
 
 Now on to the software side. You need a server that understands the LoRa protocol and can interpret the data the device sends. It's possible to roll your own (Semtech can give you its reference implementation if you sign an NDA), but there are also companies building LoRa network servers as a service, handling everything on your behalf. This article uses [The Things Network](https://www.thethingsnetwork.org), an open source, globally distributed network service that also has a free hosted community edition.
 
-Because a network server only processes your data and doesn't store it, you need a place to store your messages, as well. The Things Network allows you to hook into their service through an MQTT client and forward your data to the cloud service of your choice (or straight to your application).
+Because a network server only processes your data and doesn't store it, you need a somewhere to store your messages as well. The Things Network allows you to hook into their service through an MQTT client and forward your data to the cloud service of your choice (or straight to your application).
 
 ## 2. Setting up the gateway
 
-You now need to configure the gateway by installing software that scans the spectrum and forwards all LoRa packets to the network server. Below are setup instructions for the three gateways suggested earlier.
+You now need to configure the gateway by installing software to scan the spectrum and forward all LoRa packets to the network server. Below are setup instructions for the three gateways suggested earlier.
 
 ### 2.1 - Prerequisites
 
@@ -83,7 +86,7 @@ Follow the instructions in [this document](https://www.thethingsnetwork.org/docs
 
 The Conduit is configured with DHCP disabled, so you need to enable this first. There are two options to do this: either via Ethernet or via micro-USB.
 
-__Using Ethernet__
+**Using Ethernet**
 
 1. Connect to the Conduit over Ethernet (from the Conduit to your computer).
 1. Set a static IP address of 192.168.2.2 for your computer.
@@ -91,7 +94,7 @@ __Using Ethernet__
 1. Log in through SSH to 192.168.2.1 with the username `root` and password `root`.
 
 
-__Over micro-USB__
+**Over micro-USB**
 
 1. Connect to the Conduit using a micro-USB cable.
 1. The gateway appears as a serial device.
@@ -101,7 +104,7 @@ __Over micro-USB__
 
 Now that you are connected, you can set up the gateway:
 
-1.  Enable DHCP by following Step 4 in [this document](http://www.multitech.net/developer/software/mlinux/getting-started-with-conduit-mlinux/).
+1. Enable DHCP by following Step 4 in [this document](http://www.multitech.net/developer/software/mlinux/getting-started-with-conduit-mlinux/).
 1. Connect the gateway over Ethernet to your router.
 1. Verify that the gateway is connected to the internet (for example, by running `ping 8.8.4.4`).
 
@@ -113,11 +116,11 @@ Follow the instructions in [this document](https://github.com/ttn-zh/ic880a-gate
 
 1. [Sign up](https://console.thethingsnetwork.org) for an account at The Things Network.
 1. You're redirected to the dashboard page.
-1. Click *Gateways*.
+1. Click **Gateways**.
 
     <span class="images">![Gateways](assets/ttn1.png)</span>
 
-1. Click *Register gateway*.
+1. Click **Register gateway**.
 
     <span class="images">![Add a new gateway](assets/ttn2.png)</span>
 
@@ -126,14 +129,14 @@ Follow the instructions in [this document](https://github.com/ttn-zh/ic880a-gate
     <span class="images">![Gateway details](assets/ttn3.png)<span>Gateway details, make sure the location is set correctly so coverage maps can be updated.</span></span>
 
 1. If you use the Kerlink Wirnet station:
-    * Tick *I'm using the legacy packet forwarder*.
-    * Under 'Gateway EUI' enter the EUI of the gateway (printed on the box).
+    * Tick **I'm using the legacy packet forwarder**.
+    * Under **Gateway EUI** enter the EUI of the gateway (printed on the box).
 
 1. If you use the Raspberry Pi:
-    * Tick *I'm using the legacy packet forwarder*.
-    * Under 'Gateway EUI' enter the EUI that was printed when calling `install.sh` in step 2.1.
+    * Tick **I'm using the legacy packet forwarder**.
+    * Under **Gateway EUI** enter the EUI that was printed when calling `install.sh` in step 2.1.
 
-1. Click *Register gateway*.
+1. Click **Register gateway**.
 1. The gateway is now created.
 
 If you use the Multi-Tech Conduit, you need the 'Gateway key' to authenticate the gateway to the network. Copy it.
@@ -168,11 +171,11 @@ No further action required. The gateway should show as 'Connected' in the TTN co
     $ sh installer.sh
     ```
 
-1. And fill in the remaining questions.
+1. Fill in the remaining questions.
 
     <span class="images">![Configuring the Multi-Tech Conduit gateway for The Things Network (step 2)](assets/ttn6.png)<span>Wizard (2) for configuring the Multi-Tech Conduit</span></span>.
 
-1. After this the gateway should show as 'Connected' in the TTN console.
+1. After this, the gateway should show as **Connected** in the TTN console.
 
     <span class="images">![Connected!](assets/ttn7.png)<span>Connected!</span></span>
 
@@ -184,49 +187,49 @@ Now to the interesting work: building a device that can send sensor data over th
 
 ### 3.1 - Some notes on writing firmware
 
-#### Sending data constantly
+#### Restrictions on sending data 
 
-You cannot send data constantly because of spectrum regulations. The spectrum that LoRa uses is unlicensed, but that does not mean that it's unregulated. For example, in Europe there are duty cycle limitations of 1% - you can only send 1% of the time. In the US there's dwell time, which requires you to wait at least 400 ms. between transmissions. If you do something that would violate these regulations, sending will fail. How fast you are allowed to send depends on the spread factor that you use. With a higher spread factor, it takes longer to send a message - though the chance that it will be received by a gateway increases. Thus, you need to wait longer before you can send again. During development, you can set the spread factor to SF7 (the lowest), so you can send every 6-7 seconds.
+You cannot send data constantly because of spectrum regulations. Although the spectrum that LoRa uses is unlicensed, that does not mean it's unregulated. For example, in Europe there are duty cycle limitations of 1% - meaning you can only send 1% of the time. In the US, there's dwell time, which requires you to wait at least 400 ms. between transmissions. If you violate these regulations, your data transmission will fail. How fast you are allowed to send data depends on the spread factor that you use. With a higher spread factor, it takes longer to send a message - though the chance that it will be received by a gateway increases. But you will need to wait longer before you can send data again. During development, you can set the spread factor to SF7 (the lowest), so you can send every 6-7 seconds.
 
 LoRaWAN has a feature called Adaptive Data Rating (ADR), through which the network can control the spread factor. You probably want this enabled.
 
-#### Blocking pins
+#### Blocked pins
 
 A disadvantage of the SX1272 and SX1276 LoRa shields is that they block a lot of pins. You can solder some new headers on the back of the shield to add new peripherals, or use a microcontroller like the nRF51-DK or a NUCLEO board that has more pins available than just the Arduino headers.
 
 ### 3.2 - Registering the device on The Things Network
 
-LoRaWAN uses an end-to-end encryption scheme that uses two session keys. One key is held by the network server, and another one is held by the application server (in this tutorial TTN fulfills both roles). These session keys are created when the device joins the network. For the initial authentication with the network the application needs its device EUI, the application EUI of the application it wants to join, and a pre-shared key (the application key).
+LoRaWAN uses an end-to-end encryption scheme that uses two session keys. One key is held by the network server, and the other is held by the application server (in this tutorial TTN fulfils both roles). These session keys are created when the device joins the network. For the initial authentication with the network, the application needs its device EUI, the EUI of the application it wants to join (referred to as the application EUI), and a pre-shared key (the application key).
 
-The device EUI and application EUI are globally unique identifiers. You can buy a block of EUIs from the [IEEE](http://standards.ieee.org/develop/regauth/tut/eui.pdf). If you're using a module it often already has an EUI printed on the module. If you're using a radio shield you can use an EUI from The Things Network's block.
+The device EUI and application EUI are globally unique identifiers. You can buy a block of EUIs from the [IEEE](http://standards.ieee.org/develop/regauth/tut/eui.pdf). If you're using a module, it may have an EUI printed on the module. If you're using a radio shield, you can use an EUI from The Things Network's block.
 
-<span class="notes">**Note:** In LoRaWAN 1.1 the application key is replaced by the join key, and the initial authentication is handled by the join server. However, at the time of writing this is not implemented on The Things Network.</span>
+<span class="notes">**Note:** In LoRaWAN 1.1, the application key is replaced by the join key, and the initial authentication is handled by the join server. However, at the time of writing, this is not implemented on The Things Network.</span>
 
 Let's register the device in The Things Network and generate some keys:
 
 1. Go to [The Things Network console](https://console.thethingsnetwork.org).
-1. Click *Applications*.
-1. Click *Add application*.
+1. Click **Applications**.
+1. Click **Add application**.
 
     <span class="images">![Add application in TTN](assets/ttn8.png)</span>
 
-1. Fill in the details of your application, and click *Add application*.
+1. Fill in the details of your application, and click **Add application**.
 
     <span class="images">![Application details](assets/ttn9.png)<span>Filling in the application details in The Things Network.</span></span>
 
-1. You're redirected to the application page. Under *Devices*, click *Register device*.
+1. You're redirected to the application page. Under **Devices**, click **Register device**.
 
     <span class="images">![Register device](assets/ttn10.png)</span>
 
-1. If your device has an EUI printed on it, fill this in under 'Device EUI'.
+1. If your device has an EUI printed on it, enter this in under **Device EUI**.
 
     <span class="images">![Device EUI on a LoRa module](assets/ttn11.png)<span>The device EUI is often printed on the module, or on the box.</span></span>
 
-1. If your device does not have an EUI printed on it, press the 'generate' button. Do not make an EUI up, these EUIs need to be globally unique. Clicking 'generate' will allocate you an EUI from a block owned by The Things Network.
+1. If your device does not have an EUI printed on it, press the **generate** button to allocate you an EUI from a block owned by The Things Network. Do **not** make an EUI up, it must be globally unique. 
 
     <span class="images">![Generating Device EUI](assets/ttn12.png)</span>
 
-1. Fill in the rest of the details and click *Register*.
+1. Fill in the rest of the details and click **Register**.
 
     <span class="images">![Registering a new device in TTN](assets/ttn13.png)</span>
 
@@ -234,17 +237,17 @@ Let's register the device in The Things Network and generate some keys:
 
     <span class="images">![Showing device keys in TTN](assets/ttn14.png)</span>
 
-Now that the device is registered in The Things Network we can start writing some code!
+Now that the device is registered in The Things Network you can start writing some code!
 
 ### 3.3 - Importing the demo application
 
 Mbed comes with an Online Compiler which you can use to build applications, without needing to install anything on your computer (although we do have [offline tools](https://os.mbed.com/docs/latest/tools/index.html)).
 
-1. [Sign up](https://os.mbed.com/account/signup/?next=%2F) for an account on Arm Mbed, which hosts the Online Compiler you'll be using.
+1. [Sign up](https://os.mbed.com/account/signup/?next=%2F) for an account on Arm Mbed, which hosts the Online Compiler.
 1. Find your development board on [the Platforms page](https://os.mbed.com/platforms/).
-1. Click *Add to your mbed compiler*.
+1. Click **Add to your mbed compiler**.
 1. Go to [mbed-os-example-lorawan]().
-1. Click *Import this program*.
+1. Click **Import this program**.
 1. You're redirected to the Online Compiler, where you can give the program a name.
 
     <span class="images">![Importing a program to get started](assets/lora7.png)<span>Importing a program to get started</span></span>
@@ -258,7 +261,7 @@ Mbed comes with an Online Compiler which you can use to build applications, with
 In the Online Compiler:
 
 1. Open `mbed_app.json` - this file contains the configuration for the application, and holds the authentication keys.
-1. If you have a SX1272 or SX1276 *shield* (so not if you have a module), set your radio type under `lora-radio`.
+1. If you have a SX1272 or SX1276 **shield** (so not if you have a module), set your radio type under `lora-radio`.
 1. Under `lora.device-eui` enter the device EUI from the TTN console.
 1. Under `lora.application-eui` enter the application EUI from the TTN console.
 1. Under `lora.application-key` enter the application key from the TTN console.
@@ -293,19 +296,19 @@ To send the current value of the PIR sensor (whether it sees movement), in the O
 
 Now you can verify whether the setup works by flashing this application to your board.
 
-1. In the Online Compiler click the *Compile* button.
+1. In the Online Compiler click the **Compile** button.
 
     <span class="images">![Compile button](assets/lora10.png)<span>Compile button</span></span>
 
-1. When compilation succeeds, a file is downloaded.
+1. When compilation succeeds, the compiler sends a file to your computer.
 1. Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you should not need a driver, but you can find drivers [here](https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html) just in case.
-1. Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see the device joining, and then sending messages in the The Things Network console, under the *Data* tab:
+1. Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see the device joining, and then sending messages in the The Things Network console, under the **Data** tab:
 
     <span class="images"><span>We've got data! **TODO: add image**</span></span>
 
 <span class="notes">**Note 1:** You can hook a [serial monitor](https://os.mbed.com/docs/latest/tutorials/serial-comm.html) up to the development board (baud rate 115,200) to see debugging messages.</span>
 
-<span class="notes">**Note 2:** No data in the *Data* tab? Verify that the gateway can receive messages. In the TTN console go to your gateway, and see if you see any data come through under the *Traffic* tab. If you see your device there, but not under the device page the keys are probably wrong.</span>
+<span class="notes">**Note 2:** No data in the **Data** tab? Verify that the gateway can receive messages. In the TTN console go to your gateway, and see if you see any data come through under the **Traffic** tab. If you see your device there, but not under the device page the keys are probably wrong.</span>
 
 #### Sending manually
 
@@ -315,14 +318,14 @@ By default, the application sends data automatically. If you want to change this
 ev_queue.call_every(TX_TIMER, send_message);
 ```
 
-And call `send_message` whenever you want (for example after the state of the sensor changes). Note that you still need to adhere to the duty cycle, so you cannot send too fast.
+And call `send_message` whenever you want (for example after the state of the sensor changes). Note that you still need to adhere to the duty cycle, so you may not be able to send data immediately.
 
 
 ### 3.6 - Relaying data back to the device
 
-You can also send data back to the device. Because LoRaWAN (in Class-A mode, which you're using here) is not continiously connected to the network you'll need to wait for a receive (RX) window to occur to receive data. An RX window opens right after a transmission. So you need to *send* to the network first before you can receive a message. If you send a message from The Things Network back to your device the network will automatically queue the message and deliver it in the next RX window.
+You can also send data back to the device. Because LoRaWAN (in Class-A mode, which you're using here) is not continuously connected to the network you'll need to wait for a receive (RX) window to occur to receive data. An RX window opens right after a transmission. So you need to *send* to the network first before you can receive a message. If you send a message from The Things Network back to your device the network automatically queues the message and delivers it in the next RX window.
 
-We can toggle the LED on your development board over LoRa. In the Online Compiler:
+You can toggle the LED on your development board over LoRa. In the Online Compiler:
 
 1. Open `main.cpp`.
 1. Replace the `receive_message` function with:
@@ -351,7 +354,7 @@ We can toggle the LED on your development board over LoRa. In the Online Compile
     <span class="notes">**Note:** On some development boards writing `0` to the LED will turn them on, on some others writing `1` will do this. It depends on the wiring of the board.</span>
 
 1. Compile and flash the application.
-1. When the device is back online, use the The Things Network console to queue a message. Go to your device page, and under *Downlink*, select port *21*, and data `01`. Then press *Send*.
+1. When the device is back online, use the The Things Network console to queue a message. Go to your device page, and under **Downlink**, select port **21**, and data `01`. Then press **Send**.
 
     <span class="images">![Queuing a downlink message using the TTN console](assets/ttn16.png)<span>Queuing a downlink message over port 21</span></span>
 
@@ -361,18 +364,18 @@ We can toggle the LED on your development board over LoRa. In the Online Compile
 
 The system works and sends data in two directions, but the data is not stored anywhere. Let's change that. The Things Network offers a data API to get the data out of the network. You can then store it on your own servers or forward it to a cloud service.
 
-For this tutorial we built a small web application which listens for events from the movement sensors, and shows an overview of all sensors. To use this application you'll need a recent version of [Node.js](https://nodejs.org) installed on your computer.
+For this tutorial, we built a small web application which listens for events from the movement sensors, and shows an overview of all sensors. To use this application you'll need a recent version of [Node.js](https://nodejs.org) installed on your computer.
 
 <span class="images">![Application which shows movement information, built using Mbed OS and The Things Network](assets/lora19.png)<span>Demo application</span></span>
 
-Let's build this application. First we need to grab an access key from The Things Network.
+Let's build this application. First, grab an access key from The Things Network:
 
 1. Go to your application in the TTN console.
-1. Locate your *Application ID* and note it down.
+1. Locate your **Application ID** and note it down.
 
     <span class="images">![TTN Application ID](assets/ttn17.png)</span>
 
-1. Locate your *Access Key*, click the 'show' button and note it down as well.
+1. Locate your **Access Key**, click the **show** button and note it down as well.
 
     <span class="images">![TTN Access Key](assets/ttn18.png)</span>
 
