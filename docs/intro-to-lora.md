@@ -245,7 +245,7 @@ Mbed comes with the Arm Mbed Online Compiler, which you can use to build applica
 1. [Sign up](https://os.mbed.com/account/signup/?next=%2F) for an account on Arm Mbed, which hosts the Online Compiler.
 1. Find your development board on [the platforms page](https://os.mbed.com/platforms/).
 1. Click **Add to your Mbed Compiler**.
-1. Go to [mbed-os-example-lorawan]().
+1. Go to [mbed-os-example-lorawan](https://os.mbed.com/teams/mbed-os-examples/code/mbed-os-example-lorawan/).
 1. Click **Import this program**.
 1. You're redirected to the Online Compiler, where you can give the program a name.
 
@@ -409,6 +409,6 @@ LoRa/LoRaWAN is a technology with which anyone can set up a network and start bu
 #### More material
 
 - [Webinar: getting started with LoRa using Arm Mbed and The Things Network](https://pages.arm.com/2017-10-29-webinar-registration.html).
-- [Mbed OS LoRaWAN stack documentation]().
+- [Mbed OS LoRaWAN stack documentation](https://os.mbed.com/docs/latest/reference/lorawan.html).
 - [Firmware updates over LoRaWAN](https://os.mbed.com/blog/entry/firmware-updates-over-lpwan-lora/).
 - [Presentations from The Things Conference](https://www.youtube.com/playlist?list=PLM8eOeiKY7JUhIyxWWU2-qziejDbBg-pf).
