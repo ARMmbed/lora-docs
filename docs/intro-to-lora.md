@@ -51,6 +51,9 @@ You also need to build devices. If you use ARM mbed (and you should), you can ei
     * [MultiTech mDot](https://developer.mbed.org/platforms/MTS-mDot-F411/) and the [UDK2 board](http://www.digikey.com/product-detail/en/multi-tech-systems-inc/MTUDK2-ST-MDOT/591-1278-ND/5247463).
         * As an alternative, you can use the [MultiTech mDot EVB](https://developer.mbed.org/platforms/mdotevb/), which is the mDot reference design.
         * Like the xDot, the mDot is already FCC/CE certified and shielded.
+    * [L-Tek FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/)
+        * Based on xDot
+        * Arduino form factor
 * A microcontroller that runs mbed (in this article, we're using the [Nordic nRF51-DK](https://developer.mbed.org/platforms/Nordic-nRF51-DK/), though most microcontrollers work) with a LoRa shield:
     * [SX1272MB2xAS](https://developer.mbed.org/components/SX1272MB2xAS/) - shield based on the SX1272 transceiver.
     * [SX1276MB1xAS](https://developer.mbed.org/components/SX1276MB1xAS/) - shield based on the SX1276 transceiver.
