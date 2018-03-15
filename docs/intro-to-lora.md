@@ -123,7 +123,7 @@ Follow the instructions in [this document](https://github.com/ttn-zh/ic880a-gate
 
 1. Fill in the details of your gateway.
 
-    <span class="images">![Gateway details](assets/ttn3.png)<span>Gateway details, make sure the location is set correctly so coverage maps can be updated.</span></span>
+    <span class="images">![Gateway details](assets/ttn3.png)<span>Gateway details. The Things Network uses the gateway location to create coverage maps, so make sure the location is set correctly.</span></span>
 
 1. If you use the Kerlink Wirnet station:
     * Tick *I'm using the legacy packet forwarder*.
@@ -198,7 +198,7 @@ A disadvantage of the SX1272 and SX1276 LoRa shields is that they block a lot of
 
 LoRaWAN uses an end-to-end encryption scheme that uses two session keys. One key is held by the network server, and another one is held by the application server (in this tutorial TTN fulfills both roles). These session keys are created when the device joins the network. For the initial authentication with the network the application needs its device EUI, the application EUI of the application it wants to join, and a pre-shared key (the application key).
 
-The device EUI and application EUI are globally unique identifiers. You can buy a block of EUIs from the [IEEE](http://standards.ieee.org/develop/regauth/tut/eui.pdf). If you're using a module it often already has an EUI printed on the module. If you're using a radio shield you can use an EUI from The Things Network's block.
+The device EUI and application EUI are globally unique identifiers. You can buy a block of EUIs from the [IEEE](http://standards.ieee.org/develop/regauth/tut/eui.pdf). Modules often already come with an EUI, which is printed on the device. If you're using a radio shield you can use an EUI from The Things Network's block.
 
 <span class="notes">**Note:** In LoRaWAN 1.1 the application key is replaced by the join key, and the initial authentication is handled by the join server. However, at the time of writing this is not implemented on The Things Network.</span>
 
@@ -265,6 +265,8 @@ In the Online Compiler:
 
     <span class="images">![Putting the LoRaWAN authentication keys in mbed_app.json](assets/ttn15.png)<span>Correct keys set in `mbed_app.json`</span></span>
 
+1. Under `lora.phy` specify the channel plan for your region. A list of possible values is listed under '[Selecting a PHY'](https://github.com/ARMmbed/mbed-os-example-lorawan#selecting-a-phy) in the docs.
+
 #### Sending the value of the PIR sensor
 
 To send the current value of the PIR sensor (whether it sees movement), in the Online Compiler:
@@ -301,7 +303,7 @@ Now you can verify whether the setup works by flashing this application to your 
 1. Plug your development board into the computer (over micro-USB) to mount it as a USB mass storage device. In most cases, you should not need a driver, but you can find drivers [here](https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html) just in case.
 1. Once the device mounts, drag the compiled file onto the board. This causes the device to boot up. You can then see the device joining, and then sending messages in the The Things Network console, under the *Data* tab:
 
-    <span class="images"><span>We've got data! **TODO: add image**</span></span>
+    <span class="images">![Data](assets/ttn19.png)<span>We've got data!</span></span>
 
 <span class="notes">**Note 1:** You can hook a [serial monitor](https://os.mbed.com/docs/latest/tutorials/serial-comm.html) up to the development board (baud rate 115,200) to see debugging messages.</span>
 
