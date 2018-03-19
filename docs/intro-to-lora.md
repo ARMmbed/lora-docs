@@ -267,7 +267,7 @@ In the Online Compiler:
 
     <span class="images">![Putting the LoRaWAN authentication keys in mbed_app.json](assets/ttn15.png)<span>Correct keys set in `mbed_app.json`</span></span>
 
-1. Under `lora.phy` specify the channel plan for your region. A list of possible values is listed under '[Selecting a PHY'](https://github.com/ARMmbed/mbed-os-example-lorawan#selecting-a-phy) in the docs.
+1. Under `lora.phy` specify the channel plan for your region. A list of possible values is listed under '[Selecting a PHY'](https://os.mbed.com/teams/mbed-os-examples/code/mbed-os-example-lorawan#selecting-a-phy) in the docs.
 
 ##### Sending the value of the PIR sensor
 
