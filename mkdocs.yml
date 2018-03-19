@@ -5,5 +5,3 @@ docs_dir: docs
 pages:
 - ['index.md','LoRa on mbed']
 - ['intro-to-lora.md','Building your own private LoRa network']
-- ['loriot.md','Setting up your LoRa network on LORIOT']
-- ['iotx.md','Setting up your LoRa network on IoT-X']
